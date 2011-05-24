@@ -44,8 +44,8 @@ public class CourseHandler extends DefaultHandler {
 		// Log.i(SuperMemoActivity.LOG_TAG,
 		// "lastElement "+uri+", "+tagName+", "+lastElement);
 
-		if (qName.equals("element")) {
-			course.addElement(new Element(Integer.valueOf(attributes
+		if (qName.equals("element") && "exercise".equals(attributes.getValue("type"))) {
+			course.addExercise(new CourseExercise(Integer.valueOf(attributes
 					.getValue("id")), attributes.getValue("name"), elementLevel));
 
 			elementLevel++;

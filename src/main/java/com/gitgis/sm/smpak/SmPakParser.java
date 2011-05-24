@@ -1,4 +1,5 @@
 package com.gitgis.sm.smpak;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -11,32 +12,32 @@ import java.util.logging.Logger;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
-
-public class SmPakParser {
+public class SmPakParser implements Parser {
 
 	protected String fileName;
 	protected RandomAccessFile randomAccessFile;
 
 	private int entrPos;
 	private int namePos;
-	
+
 	private HashMap<String, FileEntry> cachedEntries = new HashMap<String, FileEntry>();
 
 	public SmPakParser(String name) throws SmParException {
 		this.fileName = name;
 		open();
-//		try {
-//			parseCourseXml();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		parseGlossaryXml();
+		// try {
+		// parseCourseXml();
+		// } catch (IOException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+		// parseGlossaryXml();
 	}
-	
-	public FileEntry getFileEntry(String fileName) throws IOException, SmParException {
+
+	public FileEntry getFileEntry(String fileName) throws IOException,
+			SmParException {
 		FileEntry retVal = cachedEntries.get(fileName);
-		if (retVal==null) {
+		if (retVal == null) {
 			cachedEntries.put(fileName, null);
 			scanEntrChnk();
 			retVal = cachedEntries.get(fileName);
@@ -45,42 +46,35 @@ public class SmPakParser {
 	}
 
 	private void open() throws SmParException {
-		
-		try {
-			randomAccessFile = new RandomAccessFile (fileName, "r");
-			//dataInputStream = new DataInputStream(fileInputStream);
 
-			
-//			int i1;
-//			fileInputStream.skip(30);
-//			i1 = find("DataChnk".getBytes());
-//			System.out.format("%08X %d", i1 ,i1);
-//			System.out.println();
+		try {
+			randomAccessFile = new RandomAccessFile(fileName, "r");
+			// dataInputStream = new DataInputStream(fileInputStream);
+
+			// int i1;
+			// fileInputStream.skip(30);
+			// i1 = find("DataChnk".getBytes());
+			// System.out.format("%08X %d", i1 ,i1);
+			// System.out.println();
 
 			readHeader();
-			
+
 			// 427+28=455 // 01C7
-//			fileInputStream.skip(8);
-//			i1 = find("DataChnk".getBytes());
-//			System.out.format("%08X %d", i1 ,i1);
-//			System.out.println();
-
-
-			
-
+			// fileInputStream.skip(8);
+			// i1 = find("DataChnk".getBytes());
+			// System.out.format("%08X %d", i1 ,i1);
+			// System.out.println();
 
 			// DataChnk
-			//byte[] buf = readBuf(8);
-			//System.out.println(new String(buf));
+			// byte[] buf = readBuf(8);
+			// System.out.println(new String(buf));
 
 			// 4877
 
 			cachedEntries.put("/course.xml", null);
-//			cachedEntries.put("/glossary.xml", null);
-			
-			scanEntrChnk();
-			
+			// cachedEntries.put("/glossary.xml", null);
 
+			scanEntrChnk();
 
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -89,140 +83,144 @@ public class SmPakParser {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 
 	}
 
 	private void readHeader() throws IOException, SmParException {
 		// -SMArch-
 		String headerTag = new String(readBuf(8), "ISO-8859-1");
-		
+
 		if (!headerTag.equals("-SMArch-")) {
-			Logger.getLogger(SmPakParser.class.getName()).info("TESTx2 "+headerTag);
+			Logger.getLogger(SmPakParser.class.getName()).info(
+					"TESTx2 " + headerTag);
 			throw new SmParException("Invalid SMArch");
 		}
-		
-		//System.out.println(new String(header));
+
+		// System.out.println(new String(header));
 		// TODO StreamCorruptedException
-		
-		int i1=readInt(); // TODO
-		entrPos=readInt();
-		namePos=readInt();
-		
-		//fileInputStream.seek(namePos-20-4);
-		randomAccessFile.seek(namePos-8);
+
+		int i1 = readInt(); // TODO
+		entrPos = readInt();
+		namePos = readInt();
+
+		// fileInputStream.seek(namePos-20-4);
+		randomAccessFile.seek(namePos - 8);
 		String nameHeaderTag = new String(readBuf(8), "ISO-8859-1");
-		
+
 		if (!nameHeaderTag.equals("NameChnk")) {
 			throw new SmParException("Invalid NameChnk");
 		}
-		
+
 		int skipped = 0;
-		
-		while(((readBuf(1)[0])&0xFF)>=0xF) skipped++; // HACK
+
+		while (((readBuf(1)[0]) & 0xFF) >= 0xF)
+			skipped++; // HACK
 		skipped++;
 
-		//fileInputStream.skip(8-namePos-4-skipped);
-		//fileInputStream.reset();
-		
-		namePos = namePos+skipped+4;
+		// fileInputStream.skip(8-namePos-4-skipped);
+		// fileInputStream.reset();
+
+		namePos = namePos + skipped + 4;
 	}
 
-	public void scanEntrChnk() throws IOException, SmParException {
-//		long curPos = entrPos-8;
-		
-		randomAccessFile.seek(entrPos-8);
-		
+	private void scanEntrChnk() throws IOException, SmParException {
+		// long curPos = entrPos-8;
+
+		randomAccessFile.seek(entrPos - 8);
+
 		String headerTag = new String(readBuf(8), "ISO-8859-1");
-		
+
 		if (!headerTag.equals("EntrChnk")) {
-			Logger.getLogger(SmPakParser.class.getName()).info("TEST2 "+headerTag);
+			Logger.getLogger(SmPakParser.class.getName()).info(
+					"TEST2 " + headerTag);
 			throw new SmParException("Invalid EntrChnk");
 		}
 
 		int filesCnt = readInt();
-		
+
 		int currentNamePos = this.namePos;
-		
-		int pos=28;
-		for (int i=0; i<filesCnt; i++) {
+
+		int pos = 28;
+		for (int i = 0; i < filesCnt; i++) {
 			FileEntry fileEntry = new FileEntry();
 
-			currentNamePos = this.namePos+readInt(); // 4
+			currentNamePos = this.namePos + readInt(); // 4
 			int nameSize = readShort(); // 2
 			fileEntry.compression = (short) readShort(); // 2
 			fileEntry.filePos = readInt(); // 4
 			fileEntry.fileSize = readInt(); // 4
-			
-			//System.out.println(fileEntry.compression);
-			//curPos+=16;
-			
-//			fileInputStream.reset();
-			//fileInputStream.skip(-curPos);
+
+			// System.out.println(fileEntry.compression);
+			// curPos+=16;
+
+			// fileInputStream.reset();
+			// fileInputStream.skip(-curPos);
 			long curPos = randomAccessFile.getFilePointer();
 			randomAccessFile.seek(currentNamePos);
-			fileEntry.name = "/"+new String(readBuf(nameSize), "ISO-8859-1");
-			//fileInputStream.skip(-currentNamePos-nameSize);
-			//fileInputStream.reset();
+			fileEntry.name = "/" + new String(readBuf(nameSize), "ISO-8859-1");
+			// fileInputStream.skip(-currentNamePos-nameSize);
+			// fileInputStream.reset();
 			randomAccessFile.seek(curPos);
 
-			pos+=fileEntry.fileSize+8;
+			pos += fileEntry.fileSize + 8;
 
-//			if (cachedEntries.keySet().contains(fileEntry.name)) {
-				cachedEntries.put(fileEntry.name, fileEntry);
-//			}
+			// if (cachedEntries.keySet().contains(fileEntry.name)) {
+			cachedEntries.put(fileEntry.name, fileEntry);
+			// }
 		}
 
-		//fileInputStream.reset();
-		//fileInputStream.skip(-4-filesCnt*16-entrPos);
+		// fileInputStream.reset();
+		// fileInputStream.skip(-4-filesCnt*16-entrPos);
 	}
 
-//	private List<FileEntry> readNameChnk(List<FileEntry> list) throws IOException {
-////		4E 61 6D 65 43 68 6E 6B  58 04 00 00   D8 08
-////		4E 61 6D 65 43 68 6E 6B  CD 02 00 00   CD 05
-////		4E 61 6D 65 43 68 6E 6B  FC FA 01 00   FC F5 07
-////		N  a  m  e  c  h  n  k   chunksize     TODO
-//		
-//		fileInputStream.skip(namePos-8);
-//		int chunkSize = readInt();
-//		int skipped = 0;
-//		
-//		while(((readBuf(1)[0])&0xFF)>=0xF) skipped++; // HACK
-//		skipped++;
-//
-//		int cnt=0;
-//		for (FileEntry fileEntry: list) {
-//			fileEntry.name = "/"+new String(readBuf(fileEntry.nameSize));
-//			cnt+=fileEntry.nameSize;
-//		}
-//		
-//		fileInputStream.skip(8-namePos-cnt-4-skipped);
-//		return list;
-//	}
-	
-	
+	// private List<FileEntry> readNameChnk(List<FileEntry> list) throws
+	// IOException {
+	// // 4E 61 6D 65 43 68 6E 6B 58 04 00 00 D8 08
+	// // 4E 61 6D 65 43 68 6E 6B CD 02 00 00 CD 05
+	// // 4E 61 6D 65 43 68 6E 6B FC FA 01 00 FC F5 07
+	// // N a m e c h n k chunksize TODO
+	//
+	// fileInputStream.skip(namePos-8);
+	// int chunkSize = readInt();
+	// int skipped = 0;
+	//
+	// while(((readBuf(1)[0])&0xFF)>=0xF) skipped++; // HACK
+	// skipped++;
+	//
+	// int cnt=0;
+	// for (FileEntry fileEntry: list) {
+	// fileEntry.name = "/"+new String(readBuf(fileEntry.nameSize));
+	// cnt+=fileEntry.nameSize;
+	// }
+	//
+	// fileInputStream.skip(8-namePos-cnt-4-skipped);
+	// return list;
+	// }
+
 	private int find(byte[] bytes) throws IOException {
 		byte[] bytes2 = new byte[bytes.length];
 
 		byte[] buf = new byte[1];
 		int cnt = 0;
-		while (0<randomAccessFile.read(buf, 0, buf.length)) {
-			if(cnt>4000000) return -2;
-			for (int i=1; i<bytes2.length; i++) {
-				bytes2[i-1] = bytes2[i];
+		while (0 < randomAccessFile.read(buf, 0, buf.length)) {
+			if (cnt > 4000000)
+				return -2;
+			for (int i = 1; i < bytes2.length; i++) {
+				bytes2[i - 1] = bytes2[i];
 			}
-			bytes2[bytes2.length-1] = buf[0];
-			
+			bytes2[bytes2.length - 1] = buf[0];
+
 			cnt++;
 			int j;
-			for (j=0; j<bytes.length; j++) {
-				if (bytes[j]!=bytes2[j]) break;
+			for (j = 0; j < bytes.length; j++) {
+				if (bytes[j] != bytes2[j])
+					break;
 			}
-			if (j>=bytes.length) {
-				return cnt-bytes.length;
+			if (j >= bytes.length) {
+				return cnt - bytes.length;
 			}
 		}
-		
+
 		return -1;
 	}
 
@@ -236,87 +234,73 @@ public class SmPakParser {
 	protected int readInt() throws IOException {
 		byte[] buf = new byte[4];
 		randomAccessFile.read(buf, 0, buf.length);
-		return ((buf[3]&0xff)<<24)+((buf[2]&0xff)<<16)+((buf[1]&0xff)<<8)+((buf[0]&0xff)<<0);
+		return ((buf[3] & 0xff) << 24) + ((buf[2] & 0xff) << 16)
+				+ ((buf[1] & 0xff) << 8) + ((buf[0] & 0xff) << 0);
 	}
-	
+
 	protected int readInt2() throws IOException {
 		byte[] buf = new byte[4];
 		randomAccessFile.read(buf, 0, buf.length);
-		return ((buf[0]&0xff)<<24)+((buf[1]&0xff)<<16)+((buf[2]&0xff)<<8)+((buf[3]&0xff)<<0);
+		return ((buf[0] & 0xff) << 24) + ((buf[1] & 0xff) << 16)
+				+ ((buf[2] & 0xff) << 8) + ((buf[3] & 0xff) << 0);
 	}
-
 
 	protected int readShort2() throws IOException {
 		byte[] buf = new byte[2];
 		randomAccessFile.read(buf, 0, buf.length);
-		return ((buf[1]&0xff)<<0)+((buf[0]&0xff)<<8);
+		return ((buf[1] & 0xff) << 0) + ((buf[0] & 0xff) << 8);
 	}
-	
+
 	protected int readShort() throws IOException {
 		byte[] buf = new byte[2];
 		randomAccessFile.read(buf, 0, buf.length);
-		return ((buf[0]&0xff)<<0)+((buf[1]&0xff)<<8);
+		return ((buf[0] & 0xff) << 0) + ((buf[1] & 0xff) << 8);
 	}
 
-	public InputStream getInputStream(FileEntry fileEntry) throws IOException {
+	public InputStream getInputStream(String entryName) throws IOException, SmParException {
+		FileEntry fileEntry = getFileEntry(entryName);
+		if (fileEntry == null) {
+			return null;
+		}
+		return getInputStream(fileEntry);
+	}
+
+	private InputStream getInputStream(FileEntry fileEntry) throws IOException {
 		InputStream retVal = new FileInputStream(fileName);
 		retVal.skip(fileEntry.filePos);
-		
+
 		retVal = new EntryInputStream(retVal, fileEntry.fileSize);
-		
-		if (fileEntry.compression==FileEntry.INFLATE) {
+
+		if (fileEntry.compression == FileEntry.INFLATE) {
 			Inflater decompresser = new Inflater(true);
-			retVal = new InflaterInputStream(retVal, decompresser, fileEntry.fileSize);
+			retVal = new InflaterInputStream(retVal, decompresser,
+					fileEntry.fileSize);
 		}
 		return retVal;
-		
-	}
 
-	public Course getCourse() throws SmParException {
-		Course course = null;
-		try {
-			course = new Course(this, getInputStream(getFileEntry("/course.xml")));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return course;
 	}
 
 	public HashMap<String, String> getGlossary() throws SmParException {
 		HashMap<String, String> glossary = null;
 		try {
-			glossary = new Glossary(getInputStream(getFileEntry("/glossary/glossary.xml")));
+			glossary = new Glossary(
+					getInputStream(getFileEntry("/glossary/glossary.xml")));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return glossary;
 	}
-	
-	public Item getItem(Element element) throws SmParException {
-		Item item = null;
-		try {
-			ItemParser itemParser = new ItemParser(this);
-			String fileName = String.format("/item%05d.xml", element.getId());
-			item = itemParser.parseItem(getInputStream(getFileEntry(fileName)));
-			item.setFileName(fileName);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return item;
-		
-	}
 
 	/**
 	 * @return
-	 * @throws SmParException 
-	 * @throws IOException 
+	 * @throws SmParException
+	 * @throws IOException
 	 */
-	public Collection<String> getFileEntryNames() throws IOException, SmParException {
+	public Collection<String> getFileEntryNames() throws IOException,
+			SmParException {
 		scanEntrChnk();
 		return cachedEntries.keySet();
 	}
-	
+
 }

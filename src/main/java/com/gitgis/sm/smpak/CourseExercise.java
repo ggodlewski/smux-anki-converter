@@ -1,12 +1,12 @@
 package com.gitgis.sm.smpak;
 
-public class Element {
+public class CourseExercise {
 
 	private int id;
 	String name;
 	private int elementLevel;
 
-	public Element(int id, String name, int elementLevel) {
+	public CourseExercise(int id, String name, int elementLevel) {
 		this.setId(id);
 		this.name = name;
 		this.elementLevel = elementLevel;

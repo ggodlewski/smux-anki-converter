@@ -17,11 +17,11 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class Course {
 
-	private List<Element> elements = new ArrayList<Element>();
+	private List<CourseExercise> exercises = new ArrayList<CourseExercise>();
 	public String description;
 	public String title;
 	
-	public Course(SmPakParser smPakParser, InputStream inputStream) throws IOException {
+	public Course(Parser smPakParser, InputStream inputStream) throws IOException {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		try {
 			SAXParser saxParser = factory.newSAXParser();
@@ -34,27 +34,19 @@ public class Course {
 			Logger.getLogger(Course.class.getName()).severe(e.getMessage());
 			e.printStackTrace();
 		}
-		
-//		for (Element e: getElements()) {
-//			System.out.println(e);
-//		}
 	}
 
-	public void addElement(Element element) {
-		getElements().add(element);
+	public void addExercise(CourseExercise excersise) {
+		getExercises().add(excersise);
 		
 	}
 
-	public void setElements(List<Element> elements) {
-		this.elements = elements;
-	}
-
-	public List<Element> getElements() {
-		return elements;
+	public List<CourseExercise> getExercises() {
+		return exercises;
 	}
 
 	public String toString() {
-		return title+"["+elements.size()+"]";
+		return title+"["+exercises.size()+"]";
 	}
 
 
