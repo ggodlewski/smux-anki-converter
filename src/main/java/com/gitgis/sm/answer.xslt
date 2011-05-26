@@ -29,13 +29,13 @@
 	<xsl:template match="sm:td"><td><xsl:apply-templates/></td></xsl:template>
 	<xsl:template match="sm:span"><span><xsl:if test="@style"><xsl:attribute name="style"><xsl:value-of select="@style"/></xsl:attribute></xsl:if><xsl:apply-templates/></span></xsl:template>
 
-	<xsl:template match="sm:spellpad"><span style="color: red"><xsl:value-of select="@correct" /></span></xsl:template>
-	<xsl:template match="sm:radio"><span style="color: red"><xsl:value-of select="sm:option[@correct]/text()"/></span></xsl:template>
-	<xsl:template match="sm:droplist"><span style="color: red"><xsl:value-of select="sm:option[@correct]/text()"/></span></xsl:template>
-	<xsl:template match="sm:ordering-list"><span style="color: red"><xsl:value-of select="exer:answerOrdering(sm:option/text())"/></span></xsl:template>
+	<xsl:template match="sm:spellpad"><span style="color: green"><xsl:value-of select="@correct" /></span></xsl:template>
+	<xsl:template match="sm:radio"><span style="color: green"><xsl:value-of select="sm:option[@correct]/text()"/></span></xsl:template>
+	<xsl:template match="sm:droplist"><span style="color: green"><xsl:value-of select="sm:option[@correct]/text()"/></span></xsl:template>
+	<xsl:template match="sm:ordering-list"><span style="color: green"><xsl:value-of select="exer:answerOrdering(sm:option/text())"/></span></xsl:template>
 	<xsl:template match="sm:select-phrases">
 		<xsl:if test="@mode='strikethrough'">
-			<span style="color: red">[
+			<span style="color: green">[
 				<xsl:for-each select="sm:option">
 					<xsl:if test="@correct"><strike><xsl:value-of select="text()" />, </strike></xsl:if>
 					<xsl:if test="not(@correct)"><xsl:value-of select="text()" />, </xsl:if>
@@ -43,14 +43,14 @@
 			]</span>
 		</xsl:if>
 		<xsl:if test="not(@mode='strikethrough')">
-			<span style="color: red">[
+			<span style="color: green">[
 				<xsl:for-each select="sm:option[@correct]/text()"><xsl:value-of select="." />, </xsl:for-each>
 			]</span>
 		</xsl:if>
 	</xsl:template>
 	<xsl:template match="sm:drag-drop">
 		<xsl:value-of select="exer:answerDragDrop(sm:drop-text, sm:option/text(), 0)"/>
-		<span style="color: red"><xsl:value-of select="exer:answerDragDrop(sm:drop-text, sm:option/text(), 1)"/></span>
+		<span style="color: green"><xsl:value-of select="exer:answerDragDrop(sm:drop-text, sm:option/text(), 1)"/></span>
 		<xsl:value-of select="exer:answerDragDrop(sm:drop-text, sm:option/text(), 2)"/>
 	</xsl:template>
 

@@ -47,7 +47,7 @@
 	</xsl:template>
 	
 	<xsl:template match="sm:text">
-		<span style="color: red"><xsl:apply-templates /></span>
+		<span style="color: green"><xsl:apply-templates /></span>
 	</xsl:template>
 	<xsl:template match="sm:sentence"><em><xsl:value-of select="text()"/></em> - </xsl:template>
 	<xsl:template match="sm:translation"><strong><xsl:value-of select="text()"/></strong></xsl:template>
