@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -14,12 +16,15 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.gitgis.sm.smdb.SmDbItem;
+
 
 public class Course {
 
-	private List<CourseExercise> exercises = new ArrayList<CourseExercise>();
+	private Map<Integer, SmDbItem> exercises = new LinkedHashMap<Integer, SmDbItem>();
 	public String description;
 	public String title;
+	public String guid;
 	
 	public Course(Parser smPakParser, InputStream inputStream) throws IOException {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -36,12 +41,12 @@ public class Course {
 		}
 	}
 
-	public void addExercise(CourseExercise excersise) {
-		getExercises().add(excersise);
+	public void addExercise(SmDbItem exercise) {
+		exercises.put(exercise.id, exercise);
 		
 	}
 
-	public List<CourseExercise> getExercises() {
+	public Map<Integer, SmDbItem> getExercises() {
 		return exercises;
 	}
 

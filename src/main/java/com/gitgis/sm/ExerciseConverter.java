@@ -9,16 +9,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PipedInputStream;
-import java.io.PipedOutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import com.gitgis.sm.smpak.Exercise;
+import com.gitgis.sm.smdb.SmDbItem;
 
 /**
  * @author gg
@@ -27,7 +23,7 @@ import com.gitgis.sm.smpak.Exercise;
 public class ExerciseConverter {
 
 	private final InputStream inputStream;
-	private final Exercise exercise;
+	private final SmDbItem exercise;
 
 	private final StreamSource questionSource = new StreamSource(ExerciseConverter.class.getResourceAsStream("question.xslt"));
 	private final StreamSource answerSource = new StreamSource(ExerciseConverter.class.getResourceAsStream("answer.xslt"));
@@ -38,18 +34,18 @@ public class ExerciseConverter {
 	 * @param itemId 
 	 * @param inputStream
 	 */
-	public ExerciseConverter(String itemId, InputStream inputStream) {
+	public ExerciseConverter(int itemId, InputStream inputStream) {
 		this.inputStream = inputStream;
-		this.exercise = new Exercise(itemId);
+		this.exercise = new SmDbItem(itemId);
 		parameters.put("exercise", exercise);
-		parameters.put("itemId", exercise.getItemId());
+		parameters.put("itemId", exercise.id);
 	}
 
 	/**
 	 * @return
 	 * @throws IOException
 	 */
-	public Exercise getExercise() throws IOException {
+	public SmDbItem getExercise() throws IOException {
 		parse();
 		return exercise;
 	}
@@ -99,7 +95,7 @@ public class ExerciseConverter {
 		while ((line = reader.readLine()) != null) {
 			question+=line;
 		}
-		exercise.setQuestion(question);
+		exercise.question = (question);
 	}
 
 	private void parseAnswer(InputStream inputStream) throws IOException {
@@ -111,6 +107,6 @@ public class ExerciseConverter {
 		while ((line = reader.readLine()) != null) {
 			answer+=line;
 		}
-		exercise.setAnswer(answer);
+		exercise.answer = (answer);
 	}
 }

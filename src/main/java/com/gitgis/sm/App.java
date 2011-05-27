@@ -12,7 +12,9 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Map.Entry;
 
+import com.gitgis.sm.smdb.SmDbItem;
 import com.gitgis.sm.smpak.Course;
 import com.gitgis.sm.smpak.CourseExercise;
 import com.gitgis.sm.smpak.SmParException;
@@ -69,12 +71,13 @@ public class App {
 	private static void printCourse(SmParser parser) throws SmParException {
 		Course course = parser.getCourse();
 		System.out.println(course);
-		for (CourseExercise exercise : course.getExercises()) {
-			
+		for (Entry<Integer, SmDbItem> entry : course.getExercises().entrySet()) {
+			SmDbItem exercise = entry.getValue();
 			try {
-				String itemId = String.format("%05d", exercise.getId());
+				int id = exercise.id;
+				String itemId = String.format("%05d", id);
 				String entryName = "/item"+itemId+".xml";
-				ExerciseConverter converter = new ExerciseConverter(itemId, parser.getInputStream(entryName));
+				ExerciseConverter converter = new ExerciseConverter(id, parser.getInputStream(entryName));
 //				ExerciseConverter converter = new ExerciseConverter(itemId, new FileInputStream("/tmp/unpak2/"+entryName));
 				System.out.println("======");
 				System.out.println(entryName);

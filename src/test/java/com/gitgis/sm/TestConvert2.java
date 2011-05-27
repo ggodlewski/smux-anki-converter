@@ -7,15 +7,8 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.testng.annotations.Test;
-import java.io.FileInputStream;
-import java.io.IOException;
 
-import org.testng.annotations.Test;
-
-import com.gitgis.sm.smpak.Course;
-import com.gitgis.sm.smpak.CourseExercise;
-import com.gitgis.sm.smpak.Exercise;
+import com.gitgis.sm.smdb.SmDbItem;
 import com.gitgis.sm.smpak.SmParException;
 import com.gitgis.sm.smpak.SmParser;
 
@@ -39,13 +32,14 @@ public class TestConvert2 {
 	@Test
 	public void testRadio() {
 		try {
-			String itemId = String.format("%05d", 9);
+			int id = 9;
+			String itemId = String.format("%05d", id);
 			String entryName = "/item"+itemId+".xml";
-			ExerciseConverter converter = new ExerciseConverter(itemId, parser.getInputStream(entryName));
-			Exercise anki = converter.getExercise();
+			ExerciseConverter converter = new ExerciseConverter(id, parser.getInputStream(entryName));
+			SmDbItem anki = converter.getExercise();
 			
-			Assert.assertTrue(anki.getQuestion().contains("die Frau<span style=\"color: red\">(e, s, en)</span>"));
-			Assert.assertTrue(anki.getAnswer().contains("die Frau<span style=\"color: red\">en</span>"));
+			Assert.assertTrue(anki.question.contains("die Frau<span style=\"color: red\">(e, s, en)</span>"));
+			Assert.assertTrue(anki.answer.contains("die Frau<span style=\"color: red\">en</span>"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,13 +50,14 @@ public class TestConvert2 {
 	@Test
 	public void testDropList() {
 		try {
-			String itemId = String.format("%05d", 117);
+			int id = 117;
+			String itemId = String.format("%05d", id);
 			String entryName = "/item"+itemId+".xml";
-			ExerciseConverter converter = new ExerciseConverter(itemId, parser.getInputStream(entryName));
-			Exercise anki = converter.getExercise();
+			ExerciseConverter converter = new ExerciseConverter(id, parser.getInputStream(entryName));
+			SmDbItem anki = converter.getExercise();
 			
-			Assert.assertTrue(anki.getQuestion().contains("<span style=\"color: red\">(Studieren, Studierst, Studiert, Studiere)</span> du Geschichte?"));
-			Assert.assertTrue(anki.getAnswer().contains("<span style=\"color: red\">Studierst</span> du Geschichte?"));
+			Assert.assertTrue(anki.question.contains("<span style=\"color: red\">(Studieren, Studierst, Studiert, Studiere)</span> du Geschichte?"));
+			Assert.assertTrue(anki.answer.contains("<span style=\"color: red\">Studierst</span> du Geschichte?"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -73,15 +68,16 @@ public class TestConvert2 {
 	@Test
 	public void testOrderingList() {
 		try {
-			String itemId = String.format("%05d", 11);
+			int id = 11;
+			String itemId = String.format("%05d", id);
 			String entryName = "/item"+itemId+".xml";
-			ExerciseConverter converter = new ExerciseConverter(itemId, parser.getInputStream(entryName));
-			Exercise anki = converter.getExercise();
-//			System.out.println(anki.getQuestion());
-//			System.out.println(anki.getAnswer());
+			ExerciseConverter converter = new ExerciseConverter(id, parser.getInputStream(entryName));
+			SmDbItem anki = converter.getExercise();
+//			System.out.println(anki.question);
+//			System.out.println(anki.answer);
 			
-//			Assert.assertTrue(anki.getQuestion().contains("<span style=\"color: red\">&lt;geht, ? , es, Wie&gt;</span>"));
-			Assert.assertTrue(anki.getAnswer().contains("<span style=\"color: red\">&lt;Wie geht es ? &gt;</span>"));
+//			Assert.assertTrue(anki.question.contains("<span style=\"color: red\">&lt;geht, ? , es, Wie&gt;</span>"));
+			Assert.assertTrue(anki.answer.contains("<span style=\"color: red\">&lt;Wie geht es ? &gt;</span>"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -91,13 +87,14 @@ public class TestConvert2 {
 	@Test
 	public void testSelectPhrases() {
 		try {
-			String itemId = String.format("%05d", 135);
+			int id = 135;
+			String itemId = String.format("%05d", id);
 			String entryName = "/item"+itemId+".xml";
-			ExerciseConverter converter = new ExerciseConverter(itemId, parser.getInputStream(entryName));
-			Exercise anki = converter.getExercise();
+			ExerciseConverter converter = new ExerciseConverter(id, parser.getInputStream(entryName));
+			SmDbItem anki = converter.getExercise();
 			
-			Assert.assertTrue(anki.getQuestion().contains("<span style=\"color: red\">[			Herr Stadler,  			arbeitete,  			früher,  			in Düsseldorf. ,  			Jedoch,  			musste,  			er,  			seinen,  			Arbeitsplatz,  			wechseln. ,  					]</span>"));
-			Assert.assertTrue(anki.getAnswer().contains("<span style=\"color: red\">[				arbeitete, musste, 			]</span>"));
+			Assert.assertTrue(anki.question.contains("<span style=\"color: red\">[			Herr Stadler,  			arbeitete,  			früher,  			in Düsseldorf. ,  			Jedoch,  			musste,  			er,  			seinen,  			Arbeitsplatz,  			wechseln. ,  					]</span>"));
+			Assert.assertTrue(anki.answer.contains("<span style=\"color: red\">[				arbeitete, musste, 			]</span>"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -109,13 +106,14 @@ public class TestConvert2 {
 	@Test
 	public void testSelectPhrasesStrike() {
 		try {
-			String itemId = String.format("%05d", 1611);
+			int id = 1611;
+			String itemId = String.format("%05d", id);
 			String entryName = "/item"+itemId+".xml";
-			ExerciseConverter converter = new ExerciseConverter(itemId, parser.getInputStream(entryName));
-			Exercise anki = converter.getExercise();
+			ExerciseConverter converter = new ExerciseConverter(id, parser.getInputStream(entryName));
+			SmDbItem anki = converter.getExercise();
 			
-			Assert.assertTrue(anki.getQuestion().contains("<span style=\"color: red\">[			Vater,  			Mutter,  			Techniker,  			Sohn,  					]</span>"));
-			Assert.assertTrue(anki.getAnswer().contains("<span style=\"color: red\">[				Vater, Mutter, <strike>Techniker, </strike>Sohn, 			]</span>"));
+			Assert.assertTrue(anki.question.contains("<span style=\"color: red\">[			Vater,  			Mutter,  			Techniker,  			Sohn,  					]</span>"));
+			Assert.assertTrue(anki.answer.contains("<span style=\"color: red\">[				Vater, Mutter, <strike>Techniker, </strike>Sohn, 			]</span>"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -126,14 +124,15 @@ public class TestConvert2 {
 	@Test
 	public void testSentence() {
 		try {
-			String itemId = String.format("%05d", 4);
+			int id = 4;
+			String itemId = String.format("%05d", id);
 			String entryName = "/item"+itemId+".xml";
-			ExerciseConverter converter = new ExerciseConverter(itemId, parser.getInputStream(entryName));
-			Exercise anki = converter.getExercise();
-//			System.out.println(anki.getQuestion());
-//			System.out.println(anki.getAnswer());
+			ExerciseConverter converter = new ExerciseConverter(id, parser.getInputStream(entryName));
+			SmDbItem anki = converter.getExercise();
+//			System.out.println(anki.question);
+//			System.out.println(anki.answer);
 			
-			Assert.assertTrue(anki.getQuestion().contains("<span style=\"color: red\"><em>Guten Tag, Frau Fischer!</em> - <strong>Dzień dobry, pani Fischer!</strong></span>"));
+			Assert.assertTrue(anki.question.contains("<span style=\"color: red\"><em>Guten Tag, Frau Fischer!</em> - <strong>Dzień dobry, pani Fischer!</strong></span>"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -146,13 +145,14 @@ public class TestConvert2 {
 	@Test
 	public void testDragDrop() {
 		try {
-			String itemId = String.format("%05d", 124);
+			int id = 124;
+			String itemId = String.format("%05d", id);
 			String entryName = "/item"+itemId+".xml";
-			ExerciseConverter converter = new ExerciseConverter(itemId, parser.getInputStream(entryName));
-			Exercise anki = converter.getExercise();
+			ExerciseConverter converter = new ExerciseConverter(id, parser.getInputStream(entryName));
+			SmDbItem anki = converter.getExercise();
 			
-			Assert.assertTrue(anki.getQuestion().contains("Grüß <span style=\"color: red\">(dir, Sie, Ihnen, dich)</span>, Paul!"));
-			Assert.assertTrue(anki.getAnswer().contains("Grüß <span style=\"color: red\">dich</span>, Paul!"));
+			Assert.assertTrue(anki.question.contains("Grüß <span style=\"color: red\">(dir, Sie, Ihnen, dich)</span>, Paul!"));
+			Assert.assertTrue(anki.answer.contains("Grüß <span style=\"color: red\">dich</span>, Paul!"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();

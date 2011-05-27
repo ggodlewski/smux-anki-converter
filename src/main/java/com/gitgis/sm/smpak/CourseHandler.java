@@ -4,6 +4,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.gitgis.sm.smdb.SmDbItem;
+
 public class CourseHandler extends DefaultHandler {
 
 	int elementLevel = 0;
@@ -24,6 +26,7 @@ public class CourseHandler extends DefaultHandler {
 		} else if (lastElement.equals("description")) {
 			course.description = string;
 		} else if (lastElement.equals("guid")) {
+			course.guid = string;
 		} else if (lastElement.equals("author")) {
 		} else if (lastElement.equals("rights-owner")) {
 		} else if (lastElement.equals("hash")) {
@@ -44,10 +47,20 @@ public class CourseHandler extends DefaultHandler {
 		// Log.i(SuperMemoActivity.LOG_TAG,
 		// "lastElement "+uri+", "+tagName+", "+lastElement);
 
-		if (qName.equals("element") && "exercise".equals(attributes.getValue("type"))) {
-			course.addExercise(new CourseExercise(Integer.valueOf(attributes
-					.getValue("id")), attributes.getValue("name"), elementLevel));
-
+		if (qName.equals("element")) {
+			int itemId = Integer.valueOf(attributes.getValue("id"));
+			SmDbItem exercise = new SmDbItem(itemId);
+			exercise.name = attributes.getValue("name");
+			if (attributes.getValue("disabled")!=null) {
+				exercise.disabled = true;
+			}
+			if ("pres".equals(attributes.getValue("type"))) {
+				exercise.type = SmDbItem.LESSON;
+			}
+			course.addExercise(exercise);
+//			course.addExercise(
+//					new CourseExercise(), attributes.getValue("name"), elementLevel));
+//			}
 			elementLevel++;
 		}
 	}

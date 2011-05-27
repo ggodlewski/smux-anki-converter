@@ -7,15 +7,8 @@ import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.testng.annotations.Test;
-import java.io.FileInputStream;
-import java.io.IOException;
 
-import org.testng.annotations.Test;
-
-import com.gitgis.sm.smpak.Course;
-import com.gitgis.sm.smpak.CourseExercise;
-import com.gitgis.sm.smpak.Exercise;
+import com.gitgis.sm.smdb.SmDbItem;
 import com.gitgis.sm.smpak.SmParException;
 import com.gitgis.sm.smpak.SmParser;
 
@@ -39,14 +32,14 @@ public class TestConvert {
 	@Test
 	public void testSoundAnswer() {
 		try {
-
-			String itemId = String.format("%05d", 6);
+			int id = 6;
+			String itemId = String.format("%05d", id);
 			String entryName = "/item"+itemId+".xml";
-			ExerciseConverter converter = new ExerciseConverter(itemId, parser.getInputStream(entryName));
-			Exercise anki = converter.getExercise();
-			System.out.println(anki);
+			ExerciseConverter converter = new ExerciseConverter(id, parser.getInputStream(entryName));
+			SmDbItem exercise = converter.getExercise();
+			System.out.println(exercise);
 			
-			Assert.assertTrue(anki.getAnswer().contains("[sound:00006a.mp3]"));
+			Assert.assertTrue(exercise.answer.contains("[sound:00006a.mp3]"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -56,13 +49,14 @@ public class TestConvert {
 	@Test
 	public void testSfx() {
 		try {
-			String itemId = String.format("%05d", 2);
+			int id = 2;
+			String itemId = String.format("%05d", id);
 			String entryName = "/item"+itemId+".xml";
-			ExerciseConverter converter = new ExerciseConverter(itemId, parser.getInputStream(entryName));
-			Exercise anki = converter.getExercise();
+			ExerciseConverter converter = new ExerciseConverter(id, parser.getInputStream(entryName));
+			SmDbItem anki = converter.getExercise();
 			System.out.println(anki);
 			
-			Assert.assertTrue(anki.getQuestion().contains("[sound:00002c.mp3]"));
+			Assert.assertTrue(anki.question.contains("[sound:00002c.mp3]"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
