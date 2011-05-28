@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -16,12 +17,12 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.gitgis.sm.smdb.SmDbItem;
+import com.gitgis.sm.smdb.Item;
 
 
 public class Course {
 
-	private Map<Integer, SmDbItem> exercises = new LinkedHashMap<Integer, SmDbItem>();
+	private Map<Integer, Item> exercises = new LinkedHashMap<Integer, Item>();
 	public String description;
 	public String title;
 	public String guid;
@@ -41,17 +42,29 @@ public class Course {
 		}
 	}
 
-	public void addExercise(SmDbItem exercise) {
+	public void addExercise(Item exercise) {
 		exercises.put(exercise.id, exercise);
 		
 	}
 
-	public Map<Integer, SmDbItem> getExercises() {
+	public Map<Integer, Item> getExercises() {
 		return exercises;
 	}
 
 	public String toString() {
 		return title+"["+exercises.size()+"]";
+	}
+
+	/**
+	 * 
+	 */
+	public void printDetailed() {
+		for (Entry<Integer, Item> entry: exercises.entrySet()) {
+			Item exercise = entry.getValue();
+			String lineStr = exercise.id+"\t"+exercise.name+"\t"+exercise.lastRepetition;
+			lineStr+="";
+			System.out.println(lineStr);
+		}
 	}
 
 

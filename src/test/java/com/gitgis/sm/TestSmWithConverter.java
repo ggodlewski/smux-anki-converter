@@ -4,20 +4,14 @@
 package com.gitgis.sm;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Map.Entry;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.gitgis.sm.anki.AnkiDb;
-import com.gitgis.sm.anki.AnkiException;
-import com.gitgis.sm.smdb.SmDb;
 import com.gitgis.sm.smdb.Item;
+import com.gitgis.sm.smdb.SmDb;
 import com.gitgis.sm.smdb.SmException;
 import com.gitgis.sm.smpak.Course;
 import com.gitgis.sm.smpak.SmParException;
@@ -27,7 +21,7 @@ import com.gitgis.sm.smpak.SmParser;
  * @author gg
  *
  */
-public class TestSmDb {
+public class TestSmWithConverter {
 	private SmDb db;
 	private SmParser parser;
 	
@@ -55,13 +49,23 @@ public class TestSmDb {
 			}
 
 //			System.out.println(course.getExercises());
-//			course.printDetailed();
+//			for (Entry<Integer, Item> entry: exercises.entrySet()) {
+//				Item exercise = entry.getValue();
+//				String lineStr = exercise.id+"\t"+exercise.name+"\t"+exercise.lastRepetition;
+//				lineStr+="";
+//				System.out.println(lineStr);
+//			}
+//			ExerciseConverter converter = new ExerciseConverter(id, parser.getInputStream(entryName));
+//			Item anki = converter.getExercise();
 			
-			Item exercise = course.getExercises().get(202);
-			String lineStr = exercise.id+"\t"+exercise.name+"\t"+exercise.lastRepetition+"\t"+exercise.nextRepetition+"\t"+exercise.learned;
-			lineStr+="";
-			System.out.println(lineStr);
+//			Item exercise = course.getExercises().get(202);
+//			String lineStr = exercise.id+"\t"+exercise.name+"\t"+exercise.lastRepetition+"\t"+exercise.nextRepetition+"\t"+exercise.learned;
+//			lineStr+="";
+//			System.out.println(lineStr);
 
+			
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

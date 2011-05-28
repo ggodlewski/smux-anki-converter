@@ -8,7 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.gitgis.sm.smdb.SmDbItem;
+import com.gitgis.sm.smdb.Item;
 import com.gitgis.sm.smpak.SmParException;
 import com.gitgis.sm.smpak.SmParser;
 
@@ -26,18 +26,18 @@ public class TestConvert {
 		SLF4JBridgeHandler.install();
 
 		parser = new SmParser(
-				"/home/gg/var/supermemo/Niemiecki Kein Problem 1/course");
+				"/var/www/testanki/Niemiecki Kein Problem 1/course");
 	}
 	
 	@Test
 	public void testSoundAnswer() {
 		try {
-			int id = 6;
-			String itemId = String.format("%05d", id);
-			String entryName = "/item"+itemId+".xml";
-			ExerciseConverter converter = new ExerciseConverter(id, parser.getInputStream(entryName));
-			SmDbItem exercise = converter.getExercise();
-			System.out.println(exercise);
+			Item exercise = new Item(6);
+			ExerciseConverter converter = new ExerciseConverter(exercise, parser.getInputStream(exercise.getEntryName()));
+			exercise = converter.getExercise();
+			
+			System.out.println(exercise.question);
+			System.out.println(exercise.answer);
 			
 			Assert.assertTrue(exercise.answer.contains("[sound:00006a.mp3]"));
 				
@@ -49,14 +49,13 @@ public class TestConvert {
 	@Test
 	public void testSfx() {
 		try {
-			int id = 2;
-			String itemId = String.format("%05d", id);
-			String entryName = "/item"+itemId+".xml";
-			ExerciseConverter converter = new ExerciseConverter(id, parser.getInputStream(entryName));
-			SmDbItem anki = converter.getExercise();
-			System.out.println(anki);
+			Item exercise = new Item(2);
+			ExerciseConverter converter = new ExerciseConverter(exercise, parser.getInputStream(exercise.getEntryName()));
+			exercise = converter.getExercise();
 			
-			Assert.assertTrue(anki.question.contains("[sound:00002c.mp3]"));
+			System.out.println(exercise);
+			
+			Assert.assertTrue(exercise.question.contains("[sound:00002c.mp3]"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();

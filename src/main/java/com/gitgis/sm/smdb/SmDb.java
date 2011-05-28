@@ -10,11 +10,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.gitgis.sm.anki.AnkiException;
+import com.gitgis.sm.smpak.Course;
 
 /**
  * @author gg
@@ -24,7 +26,7 @@ public class SmDb {
 	
 	private Connection conn;
 
-	public SmDb(File smFile) throws SmException {
+	private SmDb(File smFile) throws SmException {
 		try {
 			System.setProperty("org.sqlite.JDBC", "true");
 			Class.forName("org.sqlite.JDBC");
@@ -42,12 +44,20 @@ public class SmDb {
 
 		}
 	}
+	
+	public static SmDb getInstance(File file) throws SmException {
+		if (file.exists()) {
+			return new SmDb(file);
+		}
+		return null;
+	}
 
 	/**
 	 * @param string
 	 * @throws SmException 
 	 */
-	public void getItems(String guid, Map<Integer, SmDbItem> retVal) throws SmException {
+	public void getItems(Course course) throws SmException {
+		Map<Integer, Item> retVal = course.getExercises();
 		
 		// TODO Auto-generated method stub
 		try {
@@ -88,24 +98,24 @@ public class SmDb {
 
 			
 			PreparedStatement stmt = conn.prepareStatement("SELECT id FROM courses WHERE guid=?");
-			stmt.setString(1, guid);
+			stmt.setString(1, course.guid);
 			ResultSet resultSet = stmt.executeQuery();
 			int courseId = resultSet.getInt(1);
 			
 			stmt = conn.prepareStatement("SELECT PageNum, Name, Type, LastRepetition, NextRepetition, AFactor, " +
 					" EstimatedFI, ExpectedFI, FirstGrade, NewInterval, NormalizedGrade, " +
-					" Repetitions, RepetitionsCategory, UFactor, UsedInterval, OrigNewInterval, Disabled " +
+					" Repetitions, RepetitionsCategory, UFactor, UsedInterval, OrigNewInterval, Disabled, Status " +
 					" FROM items WHERE CourseId=? ORDER BY QueueOrder");
 			stmt.setInt(1, courseId);
 			resultSet = stmt.executeQuery();
 			while (resultSet.next()) {
-				SmDbItem item = retVal.get(resultSet.getInt(1));
+				Item item = retVal.get(resultSet.getInt(1));
 				if (item!=null) {
 					item.dbdata = true;
 					item.name = resultSet.getString(2);
-					item.type = resultSet.getInt(3)==5 ? SmDbItem.LESSON : SmDbItem.EXERCISE; 
-					item.lastRepetition = resultSet.getInt(4);
-					item.lextRepetition = resultSet.getInt(5);
+					item.type = resultSet.getInt(3)==5 ? Item.LESSON : Item.EXERCISE; 
+					item.lastRepetition = new Date((Long.valueOf(resultSet.getLong(4)))*1000*3600*24);
+					item.nextRepetition = new Date((Long.valueOf(resultSet.getLong(5)))*1000*3600*24);
 					item.aFactor = resultSet.getFloat(6);
 					item.estimatedFI = resultSet.getFloat(7);
 					item.expectedFI = resultSet.getFloat(8);
@@ -120,6 +130,7 @@ public class SmDb {
 					if (resultSet.getBoolean(17)) {
 						item.disabled = true;
 					}
+					item.learned = resultSet.getInt(18)==1;
 				}
 			}
 			

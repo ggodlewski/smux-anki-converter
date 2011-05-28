@@ -14,7 +14,7 @@ import java.util.Map;
 
 import javax.xml.transform.stream.StreamSource;
 
-import com.gitgis.sm.smdb.SmDbItem;
+import com.gitgis.sm.smdb.Item;
 
 /**
  * @author gg
@@ -23,7 +23,7 @@ import com.gitgis.sm.smdb.SmDbItem;
 public class ExerciseConverter {
 
 	private final InputStream inputStream;
-	private final SmDbItem exercise;
+	private final Item exercise;
 
 	private final StreamSource questionSource = new StreamSource(ExerciseConverter.class.getResourceAsStream("question.xslt"));
 	private final StreamSource answerSource = new StreamSource(ExerciseConverter.class.getResourceAsStream("answer.xslt"));
@@ -31,21 +31,21 @@ public class ExerciseConverter {
 	private final Map<String, Object> parameters = new HashMap<String, Object>();
 
 	/**
-	 * @param itemId 
+	 * @param exercise 
 	 * @param inputStream
 	 */
-	public ExerciseConverter(int itemId, InputStream inputStream) {
+	public ExerciseConverter(Item exercise, InputStream inputStream) {
 		this.inputStream = inputStream;
-		this.exercise = new SmDbItem(itemId);
+		this.exercise = exercise;
 		parameters.put("exercise", exercise);
-		parameters.put("itemId", exercise.id);
+		parameters.put("itemId", String.format("%05d", exercise.id));
 	}
 
 	/**
 	 * @return
 	 * @throws IOException
 	 */
-	public SmDbItem getExercise() throws IOException {
+	public Item getExercise() throws IOException {
 		parse();
 		return exercise;
 	}

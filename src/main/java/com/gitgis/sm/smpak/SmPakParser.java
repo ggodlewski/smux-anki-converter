@@ -1,5 +1,6 @@
 package com.gitgis.sm.smpak;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import java.util.zip.InflaterInputStream;
 
 public class SmPakParser implements Parser {
 
-	protected String fileName;
+	protected File fileName;
 	protected RandomAccessFile randomAccessFile;
 
 	private int entrPos;
@@ -22,16 +23,16 @@ public class SmPakParser implements Parser {
 
 	private HashMap<String, FileEntry> cachedEntries = new HashMap<String, FileEntry>();
 
-	public SmPakParser(String name) throws SmParException {
-		this.fileName = name;
+	private SmPakParser(File file) throws SmParException {
+		this.fileName = file;
 		open();
-		// try {
-		// parseCourseXml();
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// parseGlossaryXml();
+	}
+	
+	public static SmPakParser getInstance(File file) throws SmParException {
+		if (file.exists()) {
+			return new SmPakParser(file);
+		}
+		return null;
 	}
 
 	public FileEntry getFileEntry(String fileName) throws IOException,

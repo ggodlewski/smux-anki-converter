@@ -3,6 +3,7 @@
  */
 package com.gitgis.sm.smpak;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
@@ -23,8 +24,8 @@ public class SmParser implements Parser {
 	 * @throws SmParException 
 	 */
 	public SmParser(String fileName) throws SmParException {
-		baseParser = new SmPakParser(fileName+".smpak");
-		diffParser = new SmPakParser(fileName+".smdif");
+		baseParser = SmPakParser.getInstance(new File(fileName+".smpak"));
+		diffParser = SmPakParser.getInstance(new File(fileName+".smdif"));
 	}
 
 
@@ -48,7 +49,9 @@ public class SmParser implements Parser {
 		Set<String> retVal = new HashSet<String>();
 		
 		retVal.addAll(baseParser.getFileEntryNames());
-		retVal.addAll(diffParser.getFileEntryNames());
+		if (diffParser != null) {
+			retVal.addAll(diffParser.getFileEntryNames());
+		}
 		
 		return retVal;
 	}
@@ -60,9 +63,12 @@ public class SmParser implements Parser {
 	@Override
 	public InputStream getInputStream(String entryName) throws IOException,
 			SmParException {
-		InputStream inputStream = baseParser.getInputStream(entryName);
-		if (inputStream==null) {
-			inputStream = diffParser.getInputStream(entryName);
+		InputStream inputStream = null;
+//		if (diffParser != null) {
+//			inputStream = diffParser.getInputStream(entryName);
+//		}
+		if (inputStream == null) {
+			inputStream = baseParser.getInputStream(entryName);
 		}
 		return inputStream;
 	}

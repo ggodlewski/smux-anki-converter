@@ -4,7 +4,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.gitgis.sm.smdb.SmDbItem;
+import com.gitgis.sm.smdb.Item;
 
 public class CourseHandler extends DefaultHandler {
 
@@ -48,14 +48,15 @@ public class CourseHandler extends DefaultHandler {
 		// "lastElement "+uri+", "+tagName+", "+lastElement);
 
 		if (qName.equals("element")) {
+			
 			int itemId = Integer.valueOf(attributes.getValue("id"));
-			SmDbItem exercise = new SmDbItem(itemId);
+			Item exercise = new Item(itemId);
 			exercise.name = attributes.getValue("name");
 			if (attributes.getValue("disabled")!=null) {
 				exercise.disabled = true;
 			}
 			if ("pres".equals(attributes.getValue("type"))) {
-				exercise.type = SmDbItem.LESSON;
+				exercise.type = Item.LESSON;
 			}
 			course.addExercise(exercise);
 //			course.addExercise(

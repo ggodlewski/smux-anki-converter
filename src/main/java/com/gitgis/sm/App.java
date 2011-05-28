@@ -1,7 +1,6 @@
 package com.gitgis.sm;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,9 +13,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map.Entry;
 
-import com.gitgis.sm.smdb.SmDbItem;
+import com.gitgis.sm.smdb.Item;
 import com.gitgis.sm.smpak.Course;
-import com.gitgis.sm.smpak.CourseExercise;
 import com.gitgis.sm.smpak.SmParException;
 import com.gitgis.sm.smpak.SmParser;
 
@@ -28,11 +26,11 @@ public class App {
 
 		try {
 			SmParser parser = new SmParser(
-					"/home/gg/var/supermemo/Niemiecki Kein Problem 1/course");
+					"/var/www/testanki/Niemiecki Kein Problem 3/course");
 
-//			unpakAll(parser);
-			printCourse(parser);
-			readSqlLite();
+			unpakAll(parser);
+//			printCourse(parser);
+//			readSqlLite();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -71,16 +69,15 @@ public class App {
 	private static void printCourse(SmParser parser) throws SmParException {
 		Course course = parser.getCourse();
 		System.out.println(course);
-		for (Entry<Integer, SmDbItem> entry : course.getExercises().entrySet()) {
-			SmDbItem exercise = entry.getValue();
+		for (Entry<Integer, Item> entry : course.getExercises().entrySet()) {
+			Item exercise = entry.getValue();
 			try {
-				int id = exercise.id;
-				String itemId = String.format("%05d", id);
-				String entryName = "/item"+itemId+".xml";
-				ExerciseConverter converter = new ExerciseConverter(id, parser.getInputStream(entryName));
+				ExerciseConverter converter = new ExerciseConverter(exercise, parser.getInputStream(exercise.getEntryName()));
+				exercise = converter.getExercise();
+				
 //				ExerciseConverter converter = new ExerciseConverter(itemId, new FileInputStream("/tmp/unpak2/"+entryName));
 				System.out.println("======");
-				System.out.println(entryName);
+				System.out.println(exercise.getEntryName());
 				System.out.println(converter.getExercise());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -99,7 +96,7 @@ public class App {
 		Course course = parser.getCourse();
 		System.out.println(course);
 		
-		String outputDir = "/tmp/unpak2";
+		String outputDir = "/tmp/unpak3";
 		
 		for (String fileName: parser.getFileEntryNames()) {
 			try {
