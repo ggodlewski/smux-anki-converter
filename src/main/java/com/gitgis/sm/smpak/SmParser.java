@@ -10,6 +10,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.gitgis.sm.course.Course;
+
 /**
  * @author gg
  *
@@ -21,15 +23,15 @@ public class SmParser implements Parser {
 
 	/**
 	 * @param string
-	 * @throws SmParException 
+	 * @throws SmPakException 
 	 */
-	public SmParser(String fileName) throws SmParException {
+	public SmParser(String fileName) throws SmPakException {
 		baseParser = SmPakParser.getInstance(new File(fileName+".smpak"));
 		diffParser = SmPakParser.getInstance(new File(fileName+".smdif"));
 	}
 
 
-	public Course getCourse() throws SmParException {
+	public Course getCourse() throws SmPakException {
 		Course course = null;
 		try {
 			course = new Course(this, getInputStream("/course.xml"));
@@ -42,10 +44,10 @@ public class SmParser implements Parser {
 
 	/**
 	 * @return
-	 * @throws SmParException 
+	 * @throws SmPakException 
 	 * @throws IOException 
 	 */
-	public Collection<String> getFileEntryNames() throws IOException, SmParException {
+	public Collection<String> getFileEntryNames() throws IOException, SmPakException {
 		Set<String> retVal = new HashSet<String>();
 		
 		retVal.addAll(baseParser.getFileEntryNames());
@@ -62,11 +64,11 @@ public class SmParser implements Parser {
 	 */
 	@Override
 	public InputStream getInputStream(String entryName) throws IOException,
-			SmParException {
+			SmPakException {
 		InputStream inputStream = null;
-//		if (diffParser != null) {
-//			inputStream = diffParser.getInputStream(entryName);
-//		}
+		if (diffParser != null) {
+			inputStream = diffParser.getInputStream(entryName);
+		}
 		if (inputStream == null) {
 			inputStream = baseParser.getInputStream(entryName);
 		}

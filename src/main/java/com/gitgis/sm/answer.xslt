@@ -49,9 +49,7 @@
 		</xsl:if>
 	</xsl:template>
 	<xsl:template match="sm:drag-drop">
-		<xsl:value-of select="exer:answerDragDrop(sm:drop-text, sm:option/text(), 0)"/>
 		<span style="color: green"><xsl:value-of select="exer:answerDragDrop(sm:drop-text, sm:option/text(), 1)"/></span>
-		<xsl:value-of select="exer:answerDragDrop(sm:drop-text, sm:option/text(), 2)"/>
 	</xsl:template>
 
 </xsl:stylesheet>

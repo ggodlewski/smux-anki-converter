@@ -111,8 +111,8 @@ CREATE TABLE "fieldModels" (
 	CHECK ("unique" IN (0, 1)), 
 	FOREIGN KEY("modelId") REFERENCES models (id)
 );
-INSERT INTO "fieldModels" VALUES(-549677541902198501,1,5178503160903817499,'Back','','',0,0,0,NULL,NULL,NULL,NULL,20);
 INSERT INTO "fieldModels" VALUES(7752868899852966171,0,5178503160903817499,'Front','','',1,1,0,NULL,NULL,NULL,NULL,20);
+INSERT INTO "fieldModels" VALUES(-549677541902198501,1,5178503160903817499,'Back','','',0,0,0,NULL,NULL,NULL,NULL,20);
 CREATE TABLE "cardModels" (
 	id INTEGER NOT NULL, 
 	ordinal INTEGER NOT NULL, 
@@ -149,8 +149,8 @@ CREATE TABLE "cardModels" (
 	CHECK ("allowEmptyAnswer" IN (0, 1)), 
 	CHECK (active IN (0, 1))
 );
-INSERT INTO "cardModels" VALUES(-5558036569305589476,1,5178503160903817499,'Reverse','',0,'%(Back)s','%(Front)s',NULL,NULL,NULL,0,'Arial',20,'#000000',0,'Arial',20,'#000000',0,'Arial',20,'#FFFFFF',NULL,NULL,NULL,NULL,1,'');
 INSERT INTO "cardModels" VALUES(-450455413588436709,0,5178503160903817499,'Forward','',1,'%(Front)s','%(Back)s',NULL,NULL,NULL,0,'Arial',20,'#000000',0,'Arial',20,'#000000',0,'Arial',20,'#FFFFFF',NULL,NULL,NULL,NULL,1,'');
+INSERT INTO "cardModels" VALUES(-5558036569305589476,1,5178503160903817499,'Reverse','',0,'%(Back)s','%(Front)s',NULL,NULL,NULL,0,'Arial',20,'#000000',0,'Arial',20,'#000000',0,'Arial',20,'#FFFFFF',NULL,NULL,NULL,NULL,1,'');
 CREATE TABLE decks (
 	id INTEGER NOT NULL, 
 	created FLOAT NOT NULL, 
@@ -282,9 +282,11 @@ id integer not null,
 tag text not null collate nocase,
 priority integer not null default 2,
 primary key(id));
-INSERT INTO "tags" VALUES(1,'PriorityLow',1);
-INSERT INTO "tags" VALUES(2,'PriorityHigh',3);
-INSERT INTO "tags" VALUES(3,'PriorityVeryHigh',4);
+INSERT INTO "tags" VALUES(1,'Basic',2);
+INSERT INTO "tags" VALUES(3,'Reverse',2);
+INSERT INTO "tags" VALUES(4,'PriorityLow',1);
+INSERT INTO "tags" VALUES(5,'PriorityHigh',3);
+INSERT INTO "tags" VALUES(6,'PriorityVeryHigh',4);
 CREATE TABLE cardTags (
 id integer not null,
 cardId integer not null,

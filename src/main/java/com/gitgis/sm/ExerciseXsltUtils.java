@@ -67,11 +67,12 @@ public class ExerciseXsltUtils {
 		Matcher matcher = Pattern.compile("(.*)\\[([0-9]+)\\](.*)").matcher(
 				text);
 		if (matcher.find()) {
-			Set<String> words = new HashSet<String>();
+			List<String> words = new ArrayList<String>();
 			Node node;
 			while (null != (node = iterator.nextNode())) {
 				words.add(node.getNodeValue());
 			}
+			Collections.shuffle(words);
 
 			String result = "(";
 			for (String word : words) {
@@ -94,31 +95,33 @@ public class ExerciseXsltUtils {
 			int part) {
 		String[] retVal = new String[3];
 
-		int pos = -1;
-		Matcher matcher = Pattern.compile("(.*)\\[([0-9]+)\\](.*)").matcher(
-				text);
-		if (matcher.find()) {
-			try {
-				pos = Integer.valueOf(matcher.group(2));
-			} catch (NumberFormatException ignore) {
-			}
-
-			String middleText = "";
-			int cnt = 0;
-			Node node;
-			while (null != (node = iterator.nextNode())) {
-				if (cnt == pos) {
-					middleText = node.getNodeValue();
-					break;
-				}
-				cnt++;
-			}
-
-			retVal[0] = matcher.group(1);
-			retVal[1] = middleText;
-			retVal[2] = matcher.group(3);
+//		List<String> options = new ArrayList<String>();
+		
+		Node node;
+		int cnt = 0;
+		while (null != (node = iterator.nextNode())) {
+//			options.add(node.getNodeValue());
+			text = text.replace("["+cnt+"]", node.getNodeValue());
+			cnt++;
 		}
-		return retVal[part];
+		
+//		int pos = -1;
+//		Matcher matcher = Pattern.compile("(.*)\\[([0-9]+)\\](.*)").matcher(
+//				text);
+//		if (matcher.find()) {
+//			try {
+//				pos = Integer.valueOf(matcher.group(2));
+//			} catch (NumberFormatException ignore) {
+//			}
+//
+//			String middleText = "";
+//			middleText = node.getNodeValue();
+//
+//			retVal[0] = matcher.group(1);
+//			retVal[1] = middleText;
+//			retVal[2] = matcher.group(3);
+//		}
+		return text;
 	}
 
 	public static String questionOrdering(NodeIterator iterator) {

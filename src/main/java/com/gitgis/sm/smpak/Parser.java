@@ -13,7 +13,7 @@ import java.util.Collection;
  */
 public interface Parser {
 
-	public InputStream getInputStream(String entryName) throws IOException, SmParException;
-	public Collection<String> getFileEntryNames() throws IOException, SmParException;
+	public InputStream getInputStream(String entryName) throws IOException, SmPakException;
+	public Collection<String> getFileEntryNames() throws IOException, SmPakException;
 
 }

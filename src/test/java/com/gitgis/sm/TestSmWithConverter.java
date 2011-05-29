@@ -10,11 +10,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.gitgis.sm.smdb.Item;
+import com.gitgis.sm.course.Course;
 import com.gitgis.sm.smdb.SmDb;
 import com.gitgis.sm.smdb.SmException;
-import com.gitgis.sm.smpak.Course;
-import com.gitgis.sm.smpak.SmParException;
+import com.gitgis.sm.smpak.SmPakException;
 import com.gitgis.sm.smpak.SmParser;
 
 /**
@@ -22,15 +21,15 @@ import com.gitgis.sm.smpak.SmParser;
  *
  */
 public class TestSmWithConverter {
-	private SmDb db;
+	private SmDb smDb;
 	private SmParser parser;
 	
 	@BeforeClass
-	public void init() throws SmParException {
+	public void init() throws SmPakException {
 		try {
 			parser = new SmParser("/var/www/testanki/Niemiecki Kein Problem 1/course");
 
-			db = SmDb.getInstance(new File("/var/www/testanki/Repetitions.dat"));
+			smDb = SmDb.getInstance(new File("/var/www/testanki/Repetitions.dat"));
 		} catch (SmException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -44,8 +43,8 @@ public class TestSmWithConverter {
 
 			Course course = parser.getCourse();
 
-			if (db!=null) {
-				db.getItems(course);
+			if (smDb!=null) {
+				smDb.getItems(course);
 			}
 
 //			System.out.println(course.getExercises());

@@ -1,4 +1,4 @@
-package com.gitgis.sm.smpak;
+package com.gitgis.sm.course;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +17,8 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.gitgis.sm.smdb.Item;
+import com.gitgis.sm.smpak.CourseHandler;
+import com.gitgis.sm.smpak.Parser;
 
 
 public class Course {
@@ -26,6 +27,13 @@ public class Course {
 	public String description;
 	public String title;
 	public String guid;
+	public String languageOfInstruction = "en";
+
+	/**
+	 * Only for Unit Tests
+	 */
+	private Course() {  
+	}
 	
 	public Course(Parser smPakParser, InputStream inputStream) throws IOException {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
@@ -65,6 +73,14 @@ public class Course {
 			lineStr+="";
 			System.out.println(lineStr);
 		}
+	}
+
+	/**
+	 * Only for Unit Tests
+	 * @return
+	 */
+	public static Course getEmptyInstance() {
+		return new Course();
 	}
 
 

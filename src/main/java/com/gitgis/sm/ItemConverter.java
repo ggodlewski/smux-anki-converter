@@ -14,27 +14,30 @@ import java.util.Map;
 
 import javax.xml.transform.stream.StreamSource;
 
-import com.gitgis.sm.smdb.Item;
+import com.gitgis.sm.course.Course;
+import com.gitgis.sm.course.Item;
 
 /**
  * @author gg
  * 
  */
-public class ExerciseConverter {
+public class ItemConverter {
 
 	private final InputStream inputStream;
 	private final Item exercise;
 
-	private final StreamSource questionSource = new StreamSource(ExerciseConverter.class.getResourceAsStream("question.xslt"));
-	private final StreamSource answerSource = new StreamSource(ExerciseConverter.class.getResourceAsStream("answer.xslt"));
+	private final StreamSource questionSource = new StreamSource(ItemConverter.class.getResourceAsStream("question.xslt"));
+	private final StreamSource answerSource = new StreamSource(ItemConverter.class.getResourceAsStream("answer.xslt"));
 
 	private final Map<String, Object> parameters = new HashMap<String, Object>();
+	private final Course course;
 
 	/**
 	 * @param exercise 
 	 * @param inputStream
 	 */
-	public ExerciseConverter(Item exercise, InputStream inputStream) {
+	public ItemConverter(Course course, Item exercise, InputStream inputStream) {
+		this.course = course;
 		this.inputStream = inputStream;
 		this.exercise = exercise;
 		parameters.put("exercise", exercise);
@@ -47,6 +50,30 @@ public class ExerciseConverter {
 	 */
 	public Item getExercise() throws IOException {
 		parse();
+		
+		if (exercise.type == Item.PRESENTATION) {
+			if (course.languageOfInstruction.equals("pl")) {
+				exercise.answer = "To jest karta lekcji przeniesiona z kursu SuperMemo UX. Po nauczeniu usuń ją z powtórek (Edytuj -> Zawieś karte).";
+			} else {
+				exercise.answer = "This card is a lesson converted from SuperMemo UX course. After learning remove it from repetitions (Edit -> Suspend card).";
+			}
+		}
+		if (exercise.type == Item.ONCE) {
+			if (course.languageOfInstruction.equals("pl")) {
+				exercise.answer += "<br/>To jest jednorazowe ćwiczenie z kursu SuperMemo UX. Usuń je z powtórek ręcznie (Edytuj -> Zawieś karte).";
+			} else {
+				exercise.answer += "<br/>This one time exercise converted from SuperMemo UX course. Remove it from repetitions manualy (Edit -> Suspend card).";
+			}
+		}
+		if (exercise.question == null || exercise.question.isEmpty()) {
+			exercise.disabled = true;
+		} else {
+			exercise.question = exercise.question.replaceAll("[ \t]+", " ");
+		}
+		if (exercise.answer != null) {
+			exercise.answer = exercise.answer.replaceAll("[ \t]+", " ");
+		}
+				
 		return exercise;
 	}
 

@@ -4,11 +4,13 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import com.gitgis.sm.smdb.Item;
+import com.gitgis.sm.course.Course;
+import com.gitgis.sm.course.Item;
 
 public class CourseHandler extends DefaultHandler {
 
 	int elementLevel = 0;
+	int disabledLevel = 10000;
 	private String lastElement = "";
 	private Course course;
 
@@ -31,6 +33,7 @@ public class CourseHandler extends DefaultHandler {
 		} else if (lastElement.equals("rights-owner")) {
 		} else if (lastElement.equals("hash")) {
 		} else if (lastElement.equals("language-of-instruction")) {
+			course.languageOfInstruction = string.trim();
 		} else if (lastElement.equals("language-taught")) {
 		} else if (lastElement.equals("default-new-items")) {
 		} else if (lastElement.equals("created")) {
@@ -44,24 +47,25 @@ public class CourseHandler extends DefaultHandler {
 			Attributes attributes) throws SAXException {
 		lastElement = qName;
 		
-		// Log.i(SuperMemoActivity.LOG_TAG,
-		// "lastElement "+uri+", "+tagName+", "+lastElement);
-
 		if (qName.equals("element")) {
 			
 			int itemId = Integer.valueOf(attributes.getValue("id"));
 			Item exercise = new Item(itemId);
 			exercise.name = attributes.getValue("name");
 			if (attributes.getValue("disabled")!=null) {
+				disabledLevel = elementLevel;
 				exercise.disabled = true;
 			}
 			if ("pres".equals(attributes.getValue("type"))) {
-				exercise.type = Item.LESSON;
+				exercise.type = Item.PRESENTATION;
+			}
+			if ("once".equals(attributes.getValue("type"))) {
+				exercise.type = Item.ONCE;
+			}
+			if (disabledLevel < elementLevel) {
+				exercise.disabled = true;
 			}
 			course.addExercise(exercise);
-//			course.addExercise(
-//					new CourseExercise(), attributes.getValue("name"), elementLevel));
-//			}
 			elementLevel++;
 		}
 	}
@@ -72,6 +76,9 @@ public class CourseHandler extends DefaultHandler {
 
 		if (qName.equals("element")) {
 			elementLevel--;
+		}
+		if (elementLevel == disabledLevel) {
+			disabledLevel = 10000;
 		}
 
 		lastElement = "";

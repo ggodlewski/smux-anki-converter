@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gitgis.sm.smdb;
+package com.gitgis.sm.course;
 
 import java.util.Date;
 
@@ -11,8 +11,9 @@ import java.util.Date;
  */
 public class Item {
 
-	public static final int LESSON = 5;
+	public static final int PRESENTATION = 5;
 	public static final int EXERCISE = 0;
+	public static final int ONCE = 1;
 	public int id;
 	public String name;
 	public int type = EXERCISE;
@@ -34,6 +35,7 @@ public class Item {
 	public boolean disabled = false;
 	public boolean dbdata;
 	public boolean learned;
+	public int lapses;
 
 	/**
 	 * @param itemId
@@ -43,7 +45,7 @@ public class Item {
 	}
 
 	public String toString() {
-		return "[id="+id+", name="+name+"]\t"+question+"\t"+answer;
+		return "[id="+id+", name="+name+"]"; //\t"+question+"\t"+answer;
 	}
 
 	/**

@@ -16,11 +16,11 @@ import org.testng.annotations.Test;
 
 import com.gitgis.sm.anki.AnkiDb;
 import com.gitgis.sm.anki.AnkiException;
+import com.gitgis.sm.course.Course;
+import com.gitgis.sm.course.Item;
 import com.gitgis.sm.smdb.SmDb;
-import com.gitgis.sm.smdb.Item;
 import com.gitgis.sm.smdb.SmException;
-import com.gitgis.sm.smpak.Course;
-import com.gitgis.sm.smpak.SmParException;
+import com.gitgis.sm.smpak.SmPakException;
 import com.gitgis.sm.smpak.SmParser;
 
 /**
@@ -32,7 +32,7 @@ public class TestSmDb {
 	private SmParser parser;
 	
 	@BeforeClass
-	public void init() throws SmParException {
+	public void init() throws SmPakException {
 		try {
 			parser = new SmParser("/var/www/testanki/Niemiecki Kein Problem 1/course");
 

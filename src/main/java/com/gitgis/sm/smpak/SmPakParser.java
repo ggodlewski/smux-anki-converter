@@ -23,12 +23,12 @@ public class SmPakParser implements Parser {
 
 	private HashMap<String, FileEntry> cachedEntries = new HashMap<String, FileEntry>();
 
-	private SmPakParser(File file) throws SmParException {
+	private SmPakParser(File file) throws SmPakException {
 		this.fileName = file;
 		open();
 	}
 	
-	public static SmPakParser getInstance(File file) throws SmParException {
+	public static SmPakParser getInstance(File file) throws SmPakException {
 		if (file.exists()) {
 			return new SmPakParser(file);
 		}
@@ -36,7 +36,7 @@ public class SmPakParser implements Parser {
 	}
 
 	public FileEntry getFileEntry(String fileName) throws IOException,
-			SmParException {
+			SmPakException {
 		FileEntry retVal = cachedEntries.get(fileName);
 		if (retVal == null) {
 			cachedEntries.put(fileName, null);
@@ -46,7 +46,7 @@ public class SmPakParser implements Parser {
 		return retVal;
 	}
 
-	private void open() throws SmParException {
+	private void open() throws SmPakException {
 
 		try {
 			randomAccessFile = new RandomAccessFile(fileName, "r");
@@ -87,14 +87,14 @@ public class SmPakParser implements Parser {
 
 	}
 
-	private void readHeader() throws IOException, SmParException {
+	private void readHeader() throws IOException, SmPakException {
 		// -SMArch-
 		String headerTag = new String(readBuf(8), "ISO-8859-1");
 
 		if (!headerTag.equals("-SMArch-")) {
 			Logger.getLogger(SmPakParser.class.getName()).info(
 					"TESTx2 " + headerTag);
-			throw new SmParException("Invalid SMArch");
+			throw new SmPakException("Invalid SMArch");
 		}
 
 		// System.out.println(new String(header));
@@ -109,7 +109,7 @@ public class SmPakParser implements Parser {
 		String nameHeaderTag = new String(readBuf(8), "ISO-8859-1");
 
 		if (!nameHeaderTag.equals("NameChnk")) {
-			throw new SmParException("Invalid NameChnk");
+			throw new SmPakException("Invalid NameChnk");
 		}
 
 		int skipped = 0;
@@ -124,7 +124,7 @@ public class SmPakParser implements Parser {
 		namePos = namePos + skipped + 4;
 	}
 
-	private void scanEntrChnk() throws IOException, SmParException {
+	private void scanEntrChnk() throws IOException, SmPakException {
 		// long curPos = entrPos-8;
 
 		randomAccessFile.seek(entrPos - 8);
@@ -134,7 +134,7 @@ public class SmPakParser implements Parser {
 		if (!headerTag.equals("EntrChnk")) {
 			Logger.getLogger(SmPakParser.class.getName()).info(
 					"TEST2 " + headerTag);
-			throw new SmParException("Invalid EntrChnk");
+			throw new SmPakException("Invalid EntrChnk");
 		}
 
 		int filesCnt = readInt();
@@ -258,7 +258,7 @@ public class SmPakParser implements Parser {
 		return ((buf[0] & 0xff) << 0) + ((buf[1] & 0xff) << 8);
 	}
 
-	public InputStream getInputStream(String entryName) throws IOException, SmParException {
+	public InputStream getInputStream(String entryName) throws IOException, SmPakException {
 		FileEntry fileEntry = getFileEntry(entryName);
 		if (fileEntry == null) {
 			return null;
@@ -281,7 +281,7 @@ public class SmPakParser implements Parser {
 
 	}
 
-	public HashMap<String, String> getGlossary() throws SmParException {
+	public HashMap<String, String> getGlossary() throws SmPakException {
 		HashMap<String, String> glossary = null;
 		try {
 			glossary = new Glossary(
@@ -295,11 +295,11 @@ public class SmPakParser implements Parser {
 
 	/**
 	 * @return
-	 * @throws SmParException
+	 * @throws SmPakException
 	 * @throws IOException
 	 */
 	public Collection<String> getFileEntryNames() throws IOException,
-			SmParException {
+			SmPakException {
 		scanEntrChnk();
 		return cachedEntries.keySet();
 	}

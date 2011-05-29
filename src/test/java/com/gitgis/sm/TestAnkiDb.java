@@ -5,6 +5,8 @@ package com.gitgis.sm;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Map.Entry;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -12,7 +14,12 @@ import org.testng.annotations.Test;
 
 import com.gitgis.sm.anki.AnkiDb;
 import com.gitgis.sm.anki.AnkiException;
-import com.gitgis.sm.smpak.SmParException;
+import com.gitgis.sm.course.Course;
+import com.gitgis.sm.course.Item;
+import com.gitgis.sm.smdb.SmDb;
+import com.gitgis.sm.smdb.SmException;
+import com.gitgis.sm.smpak.SmPakException;
+import com.gitgis.sm.smpak.SmParser;
 
 /**
  * @author gg
@@ -20,16 +27,26 @@ import com.gitgis.sm.smpak.SmParException;
  */
 public class TestAnkiDb {
 
-	AnkiDb db;
+	AnkiDb ankiDb;
+	private SmDb smDb;
+	private SmParser parser;
 	
 	@BeforeClass
-	public void init() throws SmParException {
+	public void init() throws SmPakException {
 		try {
-			db = new AnkiDb(new File("/home/gg/testanki/Niemiecki Kein Problem 1"));
+			String mainDir = "/var/www/testanki";
+			String courseDir = mainDir+"/Niemiecki Kein Problem 1";
+			
+			ankiDb = new AnkiDb(new File(courseDir));
+			parser = new SmParser(courseDir+"/course");
+			smDb = SmDb.getInstance(new File(mainDir+"/Repetitions.dat"));
 		} catch (AnkiException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
+		} catch (SmException e1) {
+			e1.printStackTrace();
 		}
+		
 	}
 	
 	@Test
@@ -37,10 +54,7 @@ public class TestAnkiDb {
 		try {
 			Assert.assertTrue(true);
 			
-			db.addMedia("/home/gg/1.png", new FileInputStream("/home/gg/1.png"));
-			db.addCard();
-			db.addCard();
-			db.addCard();
+//			ankiDb.putMedia("/home/gg/1.png", new FileInputStream("/home/gg/1.png"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -48,7 +62,51 @@ public class TestAnkiDb {
 		}
 	}
 	
+	@Test
+	public void testPutCourse() {
+		try {
+			Course course = parser.getCourse();
+			if (smDb!=null) {
+				smDb.getItems(course);
+			}
+			
+			for (String entryName: parser.getFileEntryNames()) {
+				if (entryName.startsWith("/media")) {
+					String fileName = entryName;
+					if (fileName.endsWith(".media")) {
+						fileName = fileName.substring(0, fileName.length()-".media".length())+".mp3";
+					}
+					if (fileName.endsWith(".mp3")) {
+						System.out.println(fileName);
+						ankiDb.putMedia(fileName, parser.getInputStream(entryName));
+					}
+				}
+			}
+			
+			for (Entry<Integer, Item> entry: course.getExercises().entrySet()) {
+				Item item = entry.getValue();
+				ItemConverter converter = new ItemConverter(course, item, parser.getInputStream(item.getEntryName()));
+				item = converter.getExercise();
+				
+				System.out.println(item);
+				ankiDb.putItemToCard(item);
+			}
+			
+		} catch (SmPakException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (AnkiException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+	}
 	
 	
 }

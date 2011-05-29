@@ -8,8 +8,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.gitgis.sm.smdb.Item;
-import com.gitgis.sm.smpak.SmParException;
+import com.gitgis.sm.course.Course;
+import com.gitgis.sm.course.Item;
+import com.gitgis.sm.smpak.SmPakException;
 import com.gitgis.sm.smpak.SmParser;
 
 /**
@@ -20,20 +21,23 @@ public class TestConvert {
 
 	
 	private SmParser parser;
+	private Course course;
 
 	@BeforeClass
-	public void init() throws SmParException {
+	public void init() throws SmPakException {
 		SLF4JBridgeHandler.install();
 
 		parser = new SmParser(
 				"/var/www/testanki/Niemiecki Kein Problem 1/course");
+		
+		course = Course.getEmptyInstance();
 	}
 	
 	@Test
 	public void testSoundAnswer() {
 		try {
 			Item exercise = new Item(6);
-			ExerciseConverter converter = new ExerciseConverter(exercise, parser.getInputStream(exercise.getEntryName()));
+			ItemConverter converter = new ItemConverter(course, exercise, parser.getInputStream(exercise.getEntryName()));
 			exercise = converter.getExercise();
 			
 			System.out.println(exercise.question);
@@ -50,10 +54,11 @@ public class TestConvert {
 	public void testSfx() {
 		try {
 			Item exercise = new Item(2);
-			ExerciseConverter converter = new ExerciseConverter(exercise, parser.getInputStream(exercise.getEntryName()));
+			ItemConverter converter = new ItemConverter(course, exercise, parser.getInputStream(exercise.getEntryName()));
 			exercise = converter.getExercise();
 			
-			System.out.println(exercise);
+			System.out.println(exercise.question);
+			System.out.println(exercise.answer);
 			
 			Assert.assertTrue(exercise.question.contains("[sound:00002c.mp3]"));
 				
@@ -64,5 +69,23 @@ public class TestConvert {
 	
 
 	
+	@Test
+	public void testPresentation() {
+		try {
+			Item exercise = new Item(3);
+			exercise.type = Item.PRESENTATION;
+			ItemConverter converter = new ItemConverter(course, exercise, parser.getInputStream(exercise.getEntryName()));
+			exercise = converter.getExercise();
+			
+			System.out.println(exercise.question);
+			System.out.println(exercise.answer);
+			
+			Assert.assertTrue(exercise.question.contains("<h1>Lektion 1</h1>"));
+			Assert.assertTrue(exercise.answer.contains("This card is a lesson converted from SuperMemo UX course"));
+				
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 }
