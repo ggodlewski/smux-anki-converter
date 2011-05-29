@@ -62,7 +62,7 @@ public class TestAnkiDb {
 		}
 	}
 	
-	@Test
+	@Test(enabled=false)
 	public void testPutCourse() {
 		try {
 			Course course = parser.getCourse();

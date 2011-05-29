@@ -114,12 +114,11 @@ public class SmPakParser implements Parser {
 
 		int skipped = 0;
 
-		while (((readBuf(1)[0]) & 0xFF) >= 0xF)
+		while (true) {
+			byte[] buf = readBuf(1);
+			if (buf[0]==0) break;
 			skipped++; // HACK
-		skipped++;
-
-		// fileInputStream.skip(8-namePos-4-skipped);
-		// fileInputStream.reset();
+		}
 
 		namePos = namePos + skipped + 4;
 	}
@@ -132,20 +131,20 @@ public class SmPakParser implements Parser {
 		String headerTag = new String(readBuf(8), "ISO-8859-1");
 
 		if (!headerTag.equals("EntrChnk")) {
-			Logger.getLogger(SmPakParser.class.getName()).info(
-					"TEST2 " + headerTag);
+//			Logger.getLogger(SmPakParser.class.getName()).info(
+//					"TEST2 " + headerTag);
 			throw new SmPakException("Invalid EntrChnk");
 		}
 
 		int filesCnt = readInt();
 
-		int currentNamePos = this.namePos;
+//		System.out.println(filesCnt);
 
-		int pos = 28;
+//		int pos = 28;
 		for (int i = 0; i < filesCnt; i++) {
 			FileEntry fileEntry = new FileEntry();
 
-			currentNamePos = this.namePos + readInt(); // 4
+			int currentNamePos = this.namePos + readInt(); // 4
 			int nameSize = readShort(); // 2
 			fileEntry.compression = (short) readShort(); // 2
 			fileEntry.filePos = readInt(); // 4
@@ -163,11 +162,7 @@ public class SmPakParser implements Parser {
 			// fileInputStream.reset();
 			randomAccessFile.seek(curPos);
 
-			pos += fileEntry.fileSize + 8;
-
-			// if (cachedEntries.keySet().contains(fileEntry.name)) {
 			cachedEntries.put(fileEntry.name, fileEntry);
-			// }
 		}
 
 		// fileInputStream.reset();
