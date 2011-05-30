@@ -144,6 +144,23 @@
 			</plugin>
 
 
+<plugin>
+         <groupId>org.codehaus.mojo</groupId>
+         <artifactId>build-helper-maven-plugin</artifactId>
+         <version>1.5</version>
+        <executions>
+        
+         <execution>
+        <id>dist-assembly</id>
+        <phase>package</phase>
+        <goals>
+            <goal>single</goal>
+        </goals>
+    </execution>
+         
+	</executions>
+       </plugin>
+
 		</plugins>
 
 
