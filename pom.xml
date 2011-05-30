@@ -11,6 +11,15 @@
 		<connection>scm:git:file://./git</connection>
 	</scm>
 
+<distributionManagement>  
+  <!-- Publish the versioned releases here -->  
+  <repository>  
+    <id>repo</id>  
+    <name>My maven2 repository</name>  
+    <url>scp://gg@gitgis.com/var/www/smux-anki-convert/_www</url>
+  </repository>  
+</distributionManagement>
+
 	<properties>
 
 		<!-- tell the compiler we can use 1.6 -->
