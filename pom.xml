@@ -4,7 +4,7 @@
 	<groupId>com.gitgis.sm</groupId>
 	<artifactId>smux-anki-convert</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0</version>
 
 
 	<scm>
@@ -151,28 +151,7 @@
 					<downloadJavadocs>true</downloadJavadocs>
 				</configuration>
 			</plugin>
-
-
-<plugin>
-         <groupId>org.codehaus.mojo</groupId>
-         <artifactId>build-helper-maven-plugin</artifactId>
-         <version>1.5</version>
-        <executions>
-        
-         <execution>
-        <id>dist-assembly</id>
-        <phase>package</phase>
-        <goals>
-            <goal>single</goal>
-        </goals>
-    </execution>
-         
-	</executions>
-       </plugin>
-
 		</plugins>
-
-
 
 	</build>
 
