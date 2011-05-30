@@ -22,17 +22,17 @@ public class TestUnpakAll {
 	@Test(enabled = false)
 	public void testUnpak() {
 		try {
-			SmParser parser = new SmParser(
-					"/var/www/testankirus/Rosyjski NP1 demo/course");
 //			SmParser parser = new SmParser(
-//			"/var/www/testanki/Niemiecki Kein Problem 3/course");
+//					"/var/www/testankirus/Rosyjski NP1 demo/course");
+			SmParser parser = new SmParser(
+			"/var/www/testanki/Niemiecki Kein Problem 1/course");
 
 			int cnt = 0;
 			
 //			Course course = parser.getCourse();
 //			System.out.println(course);
 			
-			String outputDir = "/var/www/testankirus/unpak";
+			String outputDir = "/var/www/testankirus/unpak2";
 			
 			for (String fileName: parser.getFileEntryNames()) {
 				System.out.println(fileName);

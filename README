@@ -1,0 +1,28 @@
+This program allow to convert SuperMemo UX Courses into Anki flash cards.
+
+In order to create anki file do the following:
+
+0. Install Java Runtime: http://www.java.com/pl/download/
+
+1. Create directory eg. <dir>
+
+2. Put contents of "Program Files/SuperMemo UX/Courses" into created previously <dir>
+Note: It's good to run SuperMemo before converting so it can download latest course update.
+
+3. Put smux-anki-convert-<version>.jar into <dir>
+
+4. If you have already started the course put repetition database "Documents and Settings/<User>/Application Data/SuperMemo World/SuperMemo UX/<User>/Repetitions.dat" into <dir>
+
+The contents of <dir> should look like:
+
+./smux-anki-convert-1.0.jar
+./Repetitions.dat
+./Niemiecki Kein Problem 1
+./Niemiecki Kein Problem 1/course.smdif
+./Niemiecki Kein Problem 1/course.smpak
+
+5. Run smux-anki-convert-1.0.jar by clicking it or with console: java -jar smux-anki-convert-1.0.jar
+
+6. Anki file and media will be created
+
+7. After runing Anki run database check
