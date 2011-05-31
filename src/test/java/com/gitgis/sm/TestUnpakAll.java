@@ -19,20 +19,21 @@ import com.gitgis.sm.smpak.SmParser;
  * 
  */
 public class TestUnpakAll {
-	@Test(enabled = true)
+	@Test(enabled = false)
 	public void testUnpak() {
 		try {
 			SmParser parser = new SmParser(
 					"/var/www/testankirus/Rosyjski NP1 demo/course");
 //			SmParser parser = new SmParser(
 //			"/var/www/testanki/Niemiecki Kein Problem 1/course");
+//			SmParser parser = new SmParser("/var/www/testankirus/EEAdvanced/course");
 
 			int cnt = 0;
 			
 //			Course course = parser.getCourse();
 //			System.out.println(course);
 			
-			String outputDir = "/var/www/testankirus/unpakrus";
+			String outputDir = "/var/www/testankirus/unpakaa";
 			
 			for (String fileName: parser.getFileEntryNames()) {
 				System.out.println(fileName);
@@ -50,6 +51,7 @@ public class TestUnpakAll {
 					}
 					fo.close();
 
+				} catch (IllegalArgumentException ignore) {
 				} catch (FileNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {

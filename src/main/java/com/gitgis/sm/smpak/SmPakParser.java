@@ -112,15 +112,18 @@ public class SmPakParser implements Parser {
 			throw new SmPakException("Invalid NameChnk");
 		}
 
-		int skipped = 0;
-
-		while (true) {
+		int skipped = 4;
+		readBuf(skipped);
+		
+		while (true) { // HACK
 			byte[] buf = readBuf(1);
-			if (buf[0]==0) break;
-			skipped++; // HACK
+			if (buf[0]>='a' && buf[0]<='z') {
+				break;
+			}
+			skipped++;
 		}
 
-		namePos = namePos + skipped + 4;
+		namePos = namePos + skipped;
 	}
 
 	private void scanEntrChnk() throws IOException, SmPakException {
