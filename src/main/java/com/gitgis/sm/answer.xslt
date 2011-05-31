@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet version="2.0"
 	xmlns:sm="http://www.supermemo.net/2006/smux" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:java="http://xml.apache.org/xslt/java"
@@ -30,7 +31,7 @@
 	<xsl:template match="sm:span"><span><xsl:if test="@style"><xsl:attribute name="style"><xsl:value-of select="@style"/></xsl:attribute></xsl:if><xsl:apply-templates/></span></xsl:template>
 
 	<xsl:template match="sm:spellpad"><span style="color: green"><xsl:value-of select="@correct" /></span></xsl:template>
-	<xsl:template match="sm:radio"><span style="color: green"><xsl:value-of select="sm:option[@correct]/text()"/></span></xsl:template>
+	<xsl:template match="sm:radio"><span style="color: green"><xsl:value-of select="exer:answerRadio(., sm:option, sm:option/text())"/></span></xsl:template>
 	<xsl:template match="sm:droplist"><span style="color: green"><xsl:value-of select="sm:option[@correct]/text()"/></span></xsl:template>
 	<xsl:template match="sm:ordering-list"><span style="color: green"><xsl:value-of select="exer:answerOrdering(sm:option/text())"/></span></xsl:template>
 	<xsl:template match="sm:select-phrases">

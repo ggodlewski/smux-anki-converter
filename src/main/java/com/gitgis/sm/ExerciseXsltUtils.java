@@ -48,18 +48,45 @@ public class ExerciseXsltUtils {
 		return retVal;
 	}
 
-	public static String answerRadio(NodeIterator iterator) {
+	public static String answerRadio(NodeIterator tagIterator,
+			NodeIterator iterator, NodeIterator textIterator) {
+		Node tagNode = tagIterator.getRoot();
 		String retVal = "";
-		Node node;
-		while (null != (node = iterator.nextNode())) {
-			if (node.getAttributes().getNamedItem("correct") != null) {
-				retVal = node.getNodeValue();
+
+		int correct = -1;
+		try {
+			Node correctAttr = tagNode.getAttributes().getNamedItem("correct");
+			if (correctAttr != null) {
+				correct = Integer.valueOf(correctAttr.getNodeValue());
 			}
+		} catch (NumberFormatException skip) {
+		}
+
+		if (correct<0) {
+			int cnt = 1;
+			Node node;
+			while (null != (node = iterator.nextNode())) {
+				if (node.getAttributes().getNamedItem("correct") != null) {
+					correct = cnt;
+					break;
+				}
+				cnt++;
+			}
+		}
+		
+		Node node;
+		int cnt = 1;
+		while (null != (node = textIterator.nextNode())) {
+			if (correct == cnt) {
+				retVal = node.getNodeValue();
+				break;
+			}
+			cnt++;
 		}
 
 		return retVal;
 	}
-	
+
 	public static String questionDragDrop(String text, NodeIterator iterator,
 			int part) {
 		String[] retVal = new String[3];
@@ -95,32 +122,32 @@ public class ExerciseXsltUtils {
 			int part) {
 		String[] retVal = new String[3];
 
-//		List<String> options = new ArrayList<String>();
-		
+		// List<String> options = new ArrayList<String>();
+
 		Node node;
 		int cnt = 0;
 		while (null != (node = iterator.nextNode())) {
-//			options.add(node.getNodeValue());
-			text = text.replace("["+cnt+"]", node.getNodeValue());
+			// options.add(node.getNodeValue());
+			text = text.replace("[" + cnt + "]", node.getNodeValue());
 			cnt++;
 		}
-		
-//		int pos = -1;
-//		Matcher matcher = Pattern.compile("(.*)\\[([0-9]+)\\](.*)").matcher(
-//				text);
-//		if (matcher.find()) {
-//			try {
-//				pos = Integer.valueOf(matcher.group(2));
-//			} catch (NumberFormatException ignore) {
-//			}
-//
-//			String middleText = "";
-//			middleText = node.getNodeValue();
-//
-//			retVal[0] = matcher.group(1);
-//			retVal[1] = middleText;
-//			retVal[2] = matcher.group(3);
-//		}
+
+		// int pos = -1;
+		// Matcher matcher = Pattern.compile("(.*)\\[([0-9]+)\\](.*)").matcher(
+		// text);
+		// if (matcher.find()) {
+		// try {
+		// pos = Integer.valueOf(matcher.group(2));
+		// } catch (NumberFormatException ignore) {
+		// }
+		//
+		// String middleText = "";
+		// middleText = node.getNodeValue();
+		//
+		// retVal[0] = matcher.group(1);
+		// retVal[1] = middleText;
+		// retVal[2] = matcher.group(3);
+		// }
 		return text;
 	}
 
@@ -132,9 +159,9 @@ public class ExerciseXsltUtils {
 			words.add(node.getNodeValue());
 		}
 		retVal += "<";
-		
+
 		Collections.shuffle(words);
-		
+
 		for (String word : words) {
 			retVal += word + ", ";
 		}
@@ -183,5 +210,5 @@ public class ExerciseXsltUtils {
 
 		return retVal;
 	}
-	
+
 }

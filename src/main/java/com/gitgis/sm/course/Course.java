@@ -2,6 +2,7 @@ package com.gitgis.sm.course;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -14,6 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -38,9 +40,12 @@ public class Course {
 	public Course(Parser smPakParser, InputStream inputStream) throws IOException {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		try {
+			byte[] bom = new byte[3];
+			inputStream.read(bom);
+
 			SAXParser saxParser = factory.newSAXParser();
 			DefaultHandler dh = new CourseHandler(this);
-			saxParser.parse(inputStream, dh);
+			saxParser.parse(new InputSource(new InputStreamReader(inputStream, "UTF-8")), dh);
 		} catch (ParserConfigurationException e) {
 			Logger.getLogger(Course.class.getName()).severe(e.getMessage());
 			e.printStackTrace();

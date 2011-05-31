@@ -9,6 +9,7 @@ import javax.xml.transform.stream.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.InputSource;
 
 public class XmlUtils {
 
@@ -17,6 +18,9 @@ public class XmlUtils {
 	static public InputStream xslt(final InputStream inputStream, Source source, Map<String, Object> parameters) {
 
 		try {
+			byte[] bom = new byte[3];
+			inputStream.read(bom);
+			
 			TransformerFactory tFactory = TransformerFactory.newInstance();
 			final Transformer transformer = tFactory.newTransformer(source);
 
@@ -30,8 +34,11 @@ public class XmlUtils {
 			Thread reader = new Thread() {
 				public void run() {
 					try {
-						transformer.transform(new StreamSource(inputStream),
-								new StreamResult(outputPipe));
+						try {
+							transformer.transform(new StreamSource(new InputStreamReader(inputStream, "UTF-8")),
+									new StreamResult(new OutputStreamWriter(outputPipe, "UTF-8")));
+						} catch (UnsupportedEncodingException impossible) {
+						}
 					} catch (TransformerException e) {
 						logger.error(e.getMessage(), e);
 					} finally {

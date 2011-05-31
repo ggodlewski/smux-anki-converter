@@ -115,7 +115,7 @@ public class ItemConverter {
 
 	private void parseQuestion(InputStream inputStream) throws IOException {
 		InputStream is2 = XmlUtils.xslt(inputStream, questionSource, parameters);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is2));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is2, "UTF-8"));
 
 		String question = "";
 		String line;
@@ -127,7 +127,7 @@ public class ItemConverter {
 
 	private void parseAnswer(InputStream inputStream) throws IOException {
 		InputStream is2 = XmlUtils.xslt(inputStream, answerSource, parameters);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is2));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is2, "UTF-8"));
 
 		String answer = "";
 		String line;

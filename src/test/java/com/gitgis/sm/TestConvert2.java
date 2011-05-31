@@ -43,7 +43,6 @@ public class TestConvert2 {
 			System.out.println(exercise.question);
 			System.out.println(exercise.answer);
 			
-			
 			Assert.assertTrue(exercise.question.contains("die Frau<span style=\"color: red\">(e, s, en)</span>"));
 			Assert.assertTrue(exercise.answer.contains("die Frau<span style=\"color: green\">en</span>"));
 				

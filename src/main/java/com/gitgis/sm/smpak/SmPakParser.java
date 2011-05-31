@@ -193,33 +193,6 @@ public class SmPakParser implements Parser {
 	// return list;
 	// }
 
-	private int find(byte[] bytes) throws IOException {
-		byte[] bytes2 = new byte[bytes.length];
-
-		byte[] buf = new byte[1];
-		int cnt = 0;
-		while (0 < randomAccessFile.read(buf, 0, buf.length)) {
-			if (cnt > 4000000)
-				return -2;
-			for (int i = 1; i < bytes2.length; i++) {
-				bytes2[i - 1] = bytes2[i];
-			}
-			bytes2[bytes2.length - 1] = buf[0];
-
-			cnt++;
-			int j;
-			for (j = 0; j < bytes.length; j++) {
-				if (bytes[j] != bytes2[j])
-					break;
-			}
-			if (j >= bytes.length) {
-				return cnt - bytes.length;
-			}
-		}
-
-		return -1;
-	}
-
 	protected byte[] readBuf(int length) throws IOException {
 		byte[] buf = new byte[length];
 		randomAccessFile.read(buf, 0, buf.length);
