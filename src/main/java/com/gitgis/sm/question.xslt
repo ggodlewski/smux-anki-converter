@@ -11,8 +11,8 @@
 	<xsl:param name="itemId"/>
 
 	<xsl:template match="/">
-		<xsl:if test="not(//sm:question-title) and //sm:chapter-title"><h1><xsl:value-of select="//sm:chapter-title" /></h1></xsl:if>
-		<xsl:if test="//sm:question-title"><h1><xsl:value-of select="//sm:question-title" /></h1></xsl:if>
+		<xsl:if test="not(//sm:question-title) and //sm:chapter-title"><xsl:value-of select="//sm:chapter-title" /></xsl:if>
+		<xsl:if test="//sm:question-title"><xsl:value-of select="//sm:question-title" /></xsl:if>
 		<xsl:apply-templates select="//sm:question" />
 		<xsl:if test="//sm:question-audio">[sound:<xsl:value-of select="$itemId"/>q.mp3]</xsl:if>
 	</xsl:template>

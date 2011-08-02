@@ -62,7 +62,7 @@ public class ExerciseXsltUtils {
 		} catch (NumberFormatException skip) {
 		}
 
-		if (correct<0) {
+		if (correct < 0) {
 			int cnt = 1;
 			Node node;
 			while (null != (node = iterator.nextNode())) {
@@ -73,7 +73,7 @@ public class ExerciseXsltUtils {
 				cnt++;
 			}
 		}
-		
+
 		Node node;
 		int cnt = 1;
 		while (null != (node = textIterator.nextNode())) {

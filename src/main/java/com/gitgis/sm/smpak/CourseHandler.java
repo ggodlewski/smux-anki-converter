@@ -52,14 +52,15 @@ public class CourseHandler extends DefaultHandler {
 			int itemId = Integer.valueOf(attributes.getValue("id"));
 			Item exercise = new Item(itemId);
 			exercise.name = attributes.getValue("name");
+			String typeOfExcercise = attributes.getValue("type");
 			if (attributes.getValue("disabled")!=null) {
 				disabledLevel = elementLevel;
 				exercise.disabled = true;
 			}
-			if ("pres".equals(attributes.getValue("type"))) {
+			if ("pres".equals(typeOfExcercise)) {
 				exercise.type = Item.PRESENTATION;
 			}
-			if ("once".equals(attributes.getValue("type"))) {
+			if ("once".equals(typeOfExcercise)) {
 				exercise.type = Item.ONCE;
 			}
 			if (disabledLevel < elementLevel) {

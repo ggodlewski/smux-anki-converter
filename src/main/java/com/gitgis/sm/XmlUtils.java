@@ -18,8 +18,16 @@ public class XmlUtils {
 	static public InputStream xslt(final InputStream inputStream, Source source, Map<String, Object> parameters) {
 
 		try {
-			byte[] bom = new byte[3];
-			inputStream.read(bom);
+
+			//
+			// use this magic class to skip over any byte order markers that might exist that will bork the 
+			// transform
+			//
+			final UnicodeBOMInputStream bomInputStream = new UnicodeBOMInputStream( inputStream );
+
+			String BOM = bomInputStream.getBOM().toString();
+			bomInputStream.skipBOM();
+			
 			
 			TransformerFactory tFactory = TransformerFactory.newInstance();
 			final Transformer transformer = tFactory.newTransformer(source);
@@ -31,11 +39,15 @@ public class XmlUtils {
 			final PipedOutputStream outputPipe = new PipedOutputStream();
 			final PipedInputStream inputPipe = new PipedInputStream(outputPipe);
 
+			//
+			// spawn a thread to run the transform... we don't need to wait for it to complete
+			// because the transform writes to a pipe, so the reader of the pipe will block till the transform thread completes
+			//
 			Thread reader = new Thread() {
 				public void run() {
 					try {
 						try {
-							transformer.transform(new StreamSource(new InputStreamReader(inputStream, "UTF-8")),
+							transformer.transform(new StreamSource(new InputStreamReader(bomInputStream, "UTF-8")),
 									new StreamResult(new OutputStreamWriter(outputPipe, "UTF-8")));
 						} catch (UnsupportedEncodingException impossible) {
 						}
@@ -51,13 +63,21 @@ public class XmlUtils {
 				}
 			};
 			reader.start();
+			// reader.join(0); // wait for thread to complete?
 
 			return inputPipe;
 		} catch (TransformerConfigurationException e) {
 			logger.error(e.getMessage(), e);
 		} catch (IOException e) {
 			logger.error(e.getMessage(), e);
-		} finally {
+		} 
+		//catch (InterruptedException e) 
+		//{
+			// TODO Auto-generated catch block
+		//	e.printStackTrace();
+		//} 
+		finally 
+		{
 
 		}
 		return null;

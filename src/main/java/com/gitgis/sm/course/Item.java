@@ -45,7 +45,7 @@ public class Item {
 	}
 
 	public String toString() {
-		return "[id="+id+", name="+name+"]"; //\t"+question+"\t"+answer;
+		return "[id="+id+", name="+name+"]\t"+question+"\t"+answer;
 	}
 
 	/**

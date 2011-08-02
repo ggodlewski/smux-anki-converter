@@ -32,34 +32,46 @@ public class App {
 	
 	public static void main(String args[]) {
 
-		
-		String mainDir = ".";
+		      
+		String strMainDir = ".";
 		if (args.length>0) {
-			mainDir = args[0];
+			strMainDir = args[0];
 		}
-		
-		File dir = new File(mainDir);
-		if (dir.exists() && dir.isDirectory()) {
-			String[] list = dir.list();
-			if (list!=null) {
-				for (String subDirName: list) {
-					File file = new File(mainDir+"/"+subDirName+"/course.smpak");
-					if (file.exists()) {
-						try {
-							logger.info("Converting course: "+subDirName);
+		int courseCount = 0;
+		File mainDir = new File(strMainDir);
+		if (mainDir.exists() && mainDir.isDirectory()) 
+		{
+			String[] list = mainDir.list();
+			if (list!=null) 
+			{
+
+				for (String subDirName: list) 
+				{
+					
+					File courseDir = new File( mainDir, subDirName );
+					File courseFile = new File( courseDir, "course.smpak" );
+					if (courseFile.exists()) 
+					{
+						try 
+						{
+							courseCount++;
+							logger.info("Converting course "+courseCount+": "+subDirName);
 							
-							String courseDir = mainDir+"/"+subDirName;
+						
+							AnkiDb ankiDb = new AnkiDb( courseDir );
+							SmParser parser = new SmParser( courseDir, "course" );
 							
-							AnkiDb ankiDb = new AnkiDb(new File(courseDir));
-							SmParser parser = new SmParser(courseDir+"/course");
-							SmDb smDb = SmDb.getInstance(new File(mainDir+"/Repetitions.dat"));
+							SmDb smDb = SmDb.getInstance(new File(mainDir , "Repetitions.dat"));
 							
 							Course course = parser.getCourse();
+							course.printDetailed();
 							if (smDb!=null) {
 								smDb.getItems(course);
 							}
 							
 							for (String entryName: parser.getFileEntryNames()) {
+								
+								logger.info("entryName: "+entryName);
 								if (entryName.startsWith("/media")) {
 									String fileName = entryName;
 									if (fileName.endsWith(".media")) {
@@ -72,14 +84,20 @@ public class App {
 								}
 							}
 							
-							for (Entry<Integer, Item> entry: course.getExercises().entrySet()) {
+							// process every entry in the course...
+							int count = 0;
+							for (Entry<Integer, Item> entry: course.getExercises().entrySet()) 
+							{
 								Item item = entry.getValue();
-								ItemConverter converter = new ItemConverter(course, item, parser.getInputStream(item.getEntryName()));
+								String entryName = item.getEntryName();
+ 								ItemConverter converter = new ItemConverter(course, item, parser.getInputStream(entryName));
 								item = converter.getExercise();
 								
 								logger.info("New card: "+item.toString());
 								ankiDb.putItemToCard(item);
+								count++;
 							}
+							logger.info( count + " cards processed in course");
 						} catch (AnkiException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -98,7 +116,10 @@ public class App {
 					}
 				}
 			}
+			logger.info(courseCount + " courses processed" );
 		}
+
 	}
+
 
 }
