@@ -13,6 +13,9 @@ import com.gitgis.sm.course.Item;
 import com.gitgis.sm.smpak.SmPakException;
 import com.gitgis.sm.smpak.SmParser;
 
+import java.io.File;
+
+
 /**
  * @author gg
  *
@@ -27,9 +30,9 @@ public class TestConvert {
 	public void init() throws SmPakException {
 		SLF4JBridgeHandler.install();
 
-		parser = new SmParser(
-				"/var/www/testanki/Niemiecki Kein Problem 1/course");
 		
+		parser = new SmParser( new File("/var/www/testanki/Niemiecki Kein Problem 1") , "course" );
+
 		course = Course.getEmptyInstance();
 	}
 	

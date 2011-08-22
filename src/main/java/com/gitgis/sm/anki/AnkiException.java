@@ -9,4 +9,9 @@ package com.gitgis.sm.anki;
  */
 public class AnkiException extends Exception {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1431819184095646789L;
+
 }

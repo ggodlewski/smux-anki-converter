@@ -11,7 +11,6 @@ import java.io.InputStream;
 
 import org.testng.annotations.Test;
 
-import com.gitgis.sm.course.Course;
 import com.gitgis.sm.smpak.SmParser;
 
 /**
@@ -22,8 +21,8 @@ public class TestUnpakAll {
 	@Test(enabled = false)
 	public void testUnpak() {
 		try {
-			SmParser parser = new SmParser(
-					"/var/www/testankirus/Rosyjski NP1 demo/course");
+			SmParser parser = new SmParser( new File("/var/www/testankirus/Rosyjski NP1 demo" ), "course");
+	
 //			SmParser parser = new SmParser(
 //			"/var/www/testanki/Niemiecki Kein Problem 1/course");
 //			SmParser parser = new SmParser("/var/www/testankirus/EEAdvanced/course");

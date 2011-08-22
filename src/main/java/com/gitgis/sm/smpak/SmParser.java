@@ -30,18 +30,13 @@ public class SmParser implements Parser {
 		diffParser = SmPakParser.getInstance(new File(courseDir, file + ".smdif"));
 	}
 
+
 	public Course getCourse() throws SmPakException {
 		Course course = null;
 		try {
-			//lets have a quick look at the xml
-			InputStream courseStream = getInputStream("/course.xml");
-			byte[] buf = new byte[10000];
-			courseStream.read(buf, 0, 10000);
-			String s = new String(buf);
-			
 			course = new Course(this, getInputStream("/course.xml"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		return course;
@@ -72,35 +67,27 @@ public class SmParser implements Parser {
 			SmPakException {
 		InputStream inputStream = null;
 		File overrideDir = new File(courseDir, "override");
-		if( overrideDir.exists() && overrideDir.isDirectory() )
-		{
+		if( overrideDir.exists() && overrideDir.isDirectory() )	{
 			//
 			// get the stream from the override dir rather than from within the smpak file
 			//
 			File courseXml = new File(overrideDir, entryName );
-			if( courseXml.isFile() )
-			{
+			if( courseXml.isFile() ){
 				FileInputStream courseStream = new FileInputStream( courseXml );
 				inputStream = courseStream;
 			}
 		}
-		if( inputStream == null )
-		{
+		if( inputStream == null ){
 			//
 			// failed to read from override dir - fallback to reading from SMPAK file
 			//
-			if (diffParser != null) 
-			{
+			if (diffParser != null){
 				inputStream = diffParser.getInputStream(entryName);
-				
 			}
-			if (inputStream == null) 
-			{
+			if (inputStream == null){
 				inputStream = baseParser.getInputStream(entryName);
 			}
 		}
 		return inputStream;
 	}
-	
-
 }

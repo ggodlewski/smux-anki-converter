@@ -4,7 +4,6 @@
 package com.gitgis.sm;
 
 import java.io.File;
-import java.util.Map.Entry;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -27,11 +26,10 @@ public class TestSmWithConverter {
 	@BeforeClass
 	public void init() throws SmPakException {
 		try {
-			parser = new SmParser("/var/www/testanki/Niemiecki Kein Problem 1/course");
+			parser = new SmParser( new File("/var/www/testanki/Niemiecki Kein Problem 1"), "/course");
 
 			smDb = SmDb.getInstance(new File("/var/www/testanki/Repetitions.dat"));
 		} catch (SmException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}

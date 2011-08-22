@@ -1,16 +1,7 @@
 package com.gitgis.sm;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Map.Entry;
 
 import org.slf4j.Logger;
@@ -39,25 +30,18 @@ public class App {
 		}
 		int courseCount = 0;
 		File mainDir = new File(strMainDir);
-		if (mainDir.exists() && mainDir.isDirectory()) 
-		{
+		if (mainDir.exists() && mainDir.isDirectory()) {
 			String[] list = mainDir.list();
-			if (list!=null) 
-			{
-
-				for (String subDirName: list) 
-				{
+			if (list!=null) {
+				for (String subDirName: list) {
 					
 					File courseDir = new File( mainDir, subDirName );
 					File courseFile = new File( courseDir, "course.smpak" );
-					if (courseFile.exists()) 
-					{
-						try 
-						{
+					if (courseFile.exists()) {
+						try {
 							courseCount++;
 							logger.info("Converting course "+courseCount+": "+subDirName);
-							
-						
+												
 							AnkiDb ankiDb = new AnkiDb( courseDir );
 							SmParser parser = new SmParser( courseDir, "course" );
 							
@@ -86,29 +70,31 @@ public class App {
 							
 							// process every entry in the course...
 							int count = 0;
-							for (Entry<Integer, Item> entry: course.getExercises().entrySet()) 
-							{
+							for (Entry<Integer, Item> entry: course.getExercises().entrySet()){
 								Item item = entry.getValue();
 								String entryName = item.getEntryName();
  								ItemConverter converter = new ItemConverter(course, item, parser.getInputStream(entryName));
 								item = converter.getExercise();
 								
-								logger.info("New card: "+item.toString());
+								//
+								// don't log every Q and A at info level...
+								//
+								logger.debug("New card: "+item.toString());
 								ankiDb.putItemToCard(item);
 								count++;
 							}
 							logger.info( count + " cards processed in course");
 						} catch (AnkiException e) {
-							// TODO Auto-generated catch block
+							
 							e.printStackTrace();
 						} catch (SmPakException e) {
-							// TODO Auto-generated catch block
+							
 							e.printStackTrace();
 						} catch (SmException e) {
-							// TODO Auto-generated catch block
+							
 							e.printStackTrace();
 						} catch (IOException e) {
-							// TODO Auto-generated catch block
+						
 							e.printStackTrace();
 						} finally {
 							

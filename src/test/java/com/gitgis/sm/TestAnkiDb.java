@@ -4,7 +4,6 @@
 package com.gitgis.sm;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map.Entry;
 
@@ -38,10 +37,10 @@ public class TestAnkiDb {
 			String courseDir = mainDir+"/Niemiecki Kein Problem 1";
 			
 			ankiDb = new AnkiDb(new File(courseDir));
-			parser = new SmParser(courseDir+"/course");
+			parser = new SmParser(new File(courseDir), "course");
 			smDb = SmDb.getInstance(new File(mainDir+"/Repetitions.dat"));
 		} catch (AnkiException e1) {
-			// TODO Auto-generated catch block
+
 			e1.printStackTrace();
 		} catch (SmException e1) {
 			e1.printStackTrace();
@@ -93,16 +92,16 @@ public class TestAnkiDb {
 			}
 			
 		} catch (SmPakException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (SmException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (AnkiException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 

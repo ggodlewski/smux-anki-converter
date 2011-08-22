@@ -11,14 +11,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.xml.utils.NodeVector;
-import org.w3c.dom.Document;
-import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 import org.w3c.dom.traversal.NodeIterator;
 
-import com.sun.org.apache.xml.internal.dtm.DTMDOMException;
-import com.sun.org.apache.xml.internal.dtm.ref.DTMNodeIterator;
 
 /**
  * @author gg
@@ -120,7 +115,7 @@ public class ExerciseXsltUtils {
 
 	public static String answerDragDrop(String text, NodeIterator iterator,
 			int part) {
-		String[] retVal = new String[3];
+		//String[] retVal = new String[3];
 
 		// List<String> options = new ArrayList<String>();
 

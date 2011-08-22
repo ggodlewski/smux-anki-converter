@@ -14,8 +14,6 @@ import java.util.Map;
 
 import javax.xml.transform.stream.StreamSource;
 
-import ch.qos.logback.classic.Logger;
-
 import com.gitgis.sm.course.Course;
 import com.gitgis.sm.course.Item;
 
@@ -92,15 +90,13 @@ public class ItemConverter {
 			int len;
 
 			while ((len = inputStream.read(buf))>0) {
-				String s = new String(buf);
 				outputPipe1.write(buf, 0, len);
 				outputPipe2.write(buf, 0, len);
-
-			
+	
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		} finally {
 			try {

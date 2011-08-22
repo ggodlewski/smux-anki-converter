@@ -3,6 +3,8 @@
  */
 package com.gitgis.sm;
 
+import java.io.File;
+
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -26,10 +28,8 @@ public class TestConvert2 {
 	@BeforeClass
 	public void init() throws SmPakException {
 		SLF4JBridgeHandler.install();
-
-		parser = new SmParser(
-				"/var/www/testanki/Niemiecki Kein Problem 1/course");
 		
+		parser = new SmParser( new File("/var/www/testanki/Niemiecki Kein Problem 1"), "course" );
 		course = Course.getEmptyInstance();
 	}
 	

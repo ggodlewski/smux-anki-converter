@@ -9,13 +9,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import com.gitgis.sm.anki.AnkiException;
 import com.gitgis.sm.course.Course;
 import com.gitgis.sm.course.Item;
 
@@ -60,7 +56,6 @@ public class SmDb {
 	public void getItems(Course course) throws SmException {
 		Map<Integer, Item> retVal = course.getExercises();
 
-		// TODO Auto-generated method stub
 		try {
 
 			/*
@@ -144,7 +139,7 @@ public class SmDb {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 			throw new SmException();
 		}
@@ -172,7 +167,7 @@ public class SmDb {
 				return isParentDisabled(courseId, resultSet.getLong(2));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+	
 			e.printStackTrace();
 		}
 		return false;

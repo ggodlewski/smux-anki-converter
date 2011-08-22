@@ -13,6 +13,11 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class Glossary extends HashMap<String, String> {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8008525076662634084L;
+
 	public Glossary(InputStream inputStream) throws IOException {
 		SAXParserFactory factory = SAXParserFactory.newInstance();
 		try {
@@ -20,10 +25,10 @@ public class Glossary extends HashMap<String, String> {
 			DefaultHandler dh = new GlossaryHandler(this);
 			saxParser.parse(inputStream, dh);
 		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (SAXException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
 	}

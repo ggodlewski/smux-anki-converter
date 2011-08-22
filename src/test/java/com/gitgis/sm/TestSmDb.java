@@ -4,18 +4,11 @@
 package com.gitgis.sm;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.gitgis.sm.anki.AnkiDb;
-import com.gitgis.sm.anki.AnkiException;
 import com.gitgis.sm.course.Course;
 import com.gitgis.sm.course.Item;
 import com.gitgis.sm.smdb.SmDb;
@@ -34,11 +27,10 @@ public class TestSmDb {
 	@BeforeClass
 	public void init() throws SmPakException {
 		try {
-			parser = new SmParser("/var/www/testanki/Niemiecki Kein Problem 1/course");
+			parser = new SmParser( new File("/var/www/testanki/Niemiecki Kein Problem 1"), "course");
 
 			db = SmDb.getInstance(new File("/var/www/testanki/Repetitions.dat"));
 		} catch (SmException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}

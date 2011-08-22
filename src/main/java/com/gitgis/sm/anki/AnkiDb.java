@@ -177,15 +177,15 @@ public class AnkiDb {
 
 			return id;
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+	
 			e.printStackTrace();
 			throw new AnkiException();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 			throw new AnkiException();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 			throw new AnkiException();
 		} finally {
@@ -220,7 +220,7 @@ public class AnkiDb {
 
 			return id;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 			throw new AnkiException();
 		} finally {
@@ -427,7 +427,7 @@ public class AnkiDb {
 			
 			return Long.valueOf(item.id);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 			throw new AnkiException();
 		} finally {
@@ -477,7 +477,7 @@ public class AnkiDb {
 				id = 0L;
 			return id + 1;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 			throw new AnkiException();
 		}

@@ -9,7 +9,6 @@ import javax.xml.transform.stream.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.xml.sax.InputSource;
 
 public class XmlUtils {
 
@@ -24,10 +23,7 @@ public class XmlUtils {
 			// transform
 			//
 			final UnicodeBOMInputStream bomInputStream = new UnicodeBOMInputStream( inputStream );
-
-			String BOM = bomInputStream.getBOM().toString();
 			bomInputStream.skipBOM();
-			
 			
 			TransformerFactory tFactory = TransformerFactory.newInstance();
 			final Transformer transformer = tFactory.newTransformer(source);
@@ -63,7 +59,6 @@ public class XmlUtils {
 				}
 			};
 			reader.start();
-			// reader.join(0); // wait for thread to complete?
 
 			return inputPipe;
 		} catch (TransformerConfigurationException e) {

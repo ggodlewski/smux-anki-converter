@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Logger;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
@@ -78,10 +77,10 @@ public class SmPakParser implements Parser {
 			scanEntrChnk();
 
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 
@@ -258,7 +257,7 @@ public class SmPakParser implements Parser {
 			glossary = new Glossary(
 					getInputStream(getFileEntry("/glossary/glossary.xml")));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}
 		return glossary;
