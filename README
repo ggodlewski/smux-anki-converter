@@ -29,7 +29,6 @@ The contents of <dir> should look like:
 
 8. If you want just to unpack SuperMemo files run: 
 
-java -jar smux-anki-convert-<version>.jar ankidir unpackdir
+java -jar smux-anki-convert-<version>.jar . unpackdir
 
-Anki files will be placed in ankidir
 SM files will be placed in unpackdir
