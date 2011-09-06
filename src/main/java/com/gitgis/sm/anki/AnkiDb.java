@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
 
+import com.gitgis.sm.StreamsUtil;
 import com.gitgis.sm.course.Item;
 
 /**
@@ -141,11 +142,7 @@ public class AnkiDb {
 		try {
 			outputStream = new FileOutputStream(outputFile);
 
-			byte[] buf = new byte[0x1000];
-			int len;
-			while (0 < (len = inputStream.read(buf))) {
-				outputStream.write(buf, 0, len);
-			}
+			StreamsUtil.copyStream(inputStream, outputStream);
 
 			PreparedStatement stmt;
 			Long id = null;

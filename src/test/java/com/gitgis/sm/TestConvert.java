@@ -83,7 +83,7 @@ public class TestConvert {
 			System.out.println(exercise.question);
 			System.out.println(exercise.answer);
 			
-			Assert.assertTrue(exercise.question.contains("<h1>Lektion 1</h1>"));
+			Assert.assertTrue(exercise.question.contains("Lektion 1"));
 			Assert.assertTrue(exercise.answer.contains("This card is a lesson converted from SuperMemo UX course"));
 				
 		} catch (Exception e) {

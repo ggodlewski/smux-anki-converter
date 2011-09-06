@@ -15,14 +15,21 @@ Note: It's good to run SuperMemo before converting so it can download latest cou
 
 The contents of <dir> should look like:
 
-./smux-anki-convert-1.0.jar
+./smux-anki-convert-1.1.jar
 ./Repetitions.dat
 ./Niemiecki Kein Problem 1
 ./Niemiecki Kein Problem 1/course.smdif
 ./Niemiecki Kein Problem 1/course.smpak
 
-5. Run smux-anki-convert-1.0.jar by clicking it or with console: java -jar smux-anki-convert-1.0.jar
+5. Run smux-anki-convert-1.1.jar by clicking it or with console: java -jar smux-anki-convert-1.1.jar
 
 6. Anki file and media will be created
 
 7. After runing Anki run database check
+
+8. If you want just to unpack SuperMemo files run: 
+
+java -jar smux-anki-convert-<version>.jar ankidir unpackdir
+
+Anki files will be placed in ankidir
+SM files will be placed in unpackdir

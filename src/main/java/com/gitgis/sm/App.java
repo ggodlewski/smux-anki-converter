@@ -1,6 +1,7 @@
 package com.gitgis.sm;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Map.Entry;
 
@@ -25,8 +26,15 @@ public class App {
 
 		      
 		String strMainDir = ".";
+		File unpackDir = null;
 		if (args.length>0) {
 			strMainDir = args[0];
+		}
+		if (args.length>1) {
+			unpackDir = new File(args[1]);
+			if (!unpackDir.exists()) {
+				unpackDir.mkdirs();
+			}
 		}
 		int courseCount = 0;
 		File mainDir = new File(strMainDir);
@@ -54,8 +62,18 @@ public class App {
 							}
 							
 							for (String entryName: parser.getFileEntryNames()) {
-								
 								logger.info("entryName: "+entryName);
+
+								if (unpackDir != null) {
+									File outputFileDir = new File(unpackDir.getAbsolutePath()+"/"+entryName.substring(0, entryName.lastIndexOf("/")));
+									if (!outputFileDir.exists()) {
+										outputFileDir.mkdirs();
+									}
+									FileOutputStream outputStream = new FileOutputStream(unpackDir.getAbsolutePath()+"/"+entryName);
+									logger.info("unpack to: "+unpackDir.getCanonicalPath()+"/"+entryName);
+									StreamsUtil.copyStream(parser.getInputStream(entryName), outputStream);
+								}
+								
 								if (entryName.startsWith("/media")) {
 									String fileName = entryName;
 									if (fileName.endsWith(".media")) {
@@ -66,6 +84,7 @@ public class App {
 										ankiDb.putMedia(fileName, parser.getInputStream(entryName));
 									}
 								}
+								
 							}
 							
 							// process every entry in the course...
