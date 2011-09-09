@@ -4,7 +4,7 @@
  */
 package com.gitgis.sm;
 
-import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -15,7 +15,7 @@ import java.io.InputStream;
 public class StreamsUtil {
 
 	public static void copyStream(InputStream inputStream,
-			FileOutputStream outputStream) throws IOException {
+			OutputStream outputStream) throws IOException {
 		byte[] buf = new byte[0x1000];
 		int len;
 		while (0 < (len = inputStream.read(buf))) {

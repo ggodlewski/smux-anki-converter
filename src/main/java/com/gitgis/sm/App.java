@@ -3,6 +3,7 @@ package com.gitgis.sm;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map.Entry;
 
 import org.slf4j.Logger;
@@ -70,8 +71,11 @@ public class App {
 										outputFileDir.mkdirs();
 									}
 									FileOutputStream outputStream = new FileOutputStream(unpackDir.getAbsolutePath()+"/"+entryName);
+									InputStream inputStream = parser.getInputStream(entryName);
 									logger.info("unpack to: "+unpackDir.getCanonicalPath()+"/"+entryName);
-									StreamsUtil.copyStream(parser.getInputStream(entryName), outputStream);
+									StreamsUtil.copyStream(inputStream, outputStream);
+									inputStream.close();
+									outputStream.close();
 								}
 								
 								if (entryName.startsWith("/media")) {
@@ -81,7 +85,9 @@ public class App {
 									}
 									if (fileName.endsWith(".mp3")) {
 										logger.info("New media file: "+fileName);
-										ankiDb.putMedia(fileName, parser.getInputStream(entryName));
+										InputStream inputStream = parser.getInputStream(entryName);
+										ankiDb.putMedia(fileName, inputStream);
+										inputStream.close();
 									}
 								}
 								

@@ -72,8 +72,9 @@ public class AnkiDb {
 	 * @return
 	 */
 	private boolean isEmpty() {
+		Statement stmt = null;
 		try {
-			Statement stmt = conn.createStatement();
+			stmt = conn.createStatement();
 			stmt.execute("SELECT COUNT(id) FROM models");
 			ResultSet resSet = stmt.getResultSet();
 			if (resSet.next()) {
@@ -81,6 +82,14 @@ public class AnkiDb {
 			}
 		} catch (SQLException e) {
 			return true;
+		} finally {
+			if (stmt!=null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return true;
 	}
@@ -154,6 +163,7 @@ public class AnkiDb {
 			if (resultSet.next()) {
 				id = resultSet.getLong(1);
 			}
+			stmt.close();
 
 			if (id == null || id == 0) {
 				stmt = conn
@@ -170,6 +180,7 @@ public class AnkiDb {
 				stmt.setString(5, origName);
 				stmt.setString(6, name);
 				stmt.executeUpdate();
+				stmt.close();
 			}
 
 			return id;
@@ -214,6 +225,7 @@ public class AnkiDb {
 			stmt.setLong(6, 0L);
 			stmt.setNull(7, java.sql.Types.INTEGER);
 			stmt.executeUpdate();
+			stmt.close();
 
 			return id;
 		} catch (SQLException e) {
@@ -348,10 +360,12 @@ public class AnkiDb {
 				stmt.setFloat(38, combinedDue);
 
 				stmt.executeUpdate();
+				stmt.close();
 				
 				stmt = conn.prepareStatement("DELETE FROM cardtags WHERE cardId=?");
 				stmt.setLong(1, item.id);
 				stmt.executeUpdate();
+				stmt.close();
 
 				stmt = conn.prepareStatement("INSERT INTO cardtags "
 						+ " (id, cardId, tagId, src) "
@@ -361,6 +375,7 @@ public class AnkiDb {
 				stmt.setLong(3, 1);
 				stmt.setLong(4, 1);
 				stmt.executeUpdate();
+				stmt.close();
 
 				stmt = conn.prepareStatement("INSERT INTO cardtags "
 						+ " (id, cardId, tagId, src) "
@@ -370,6 +385,7 @@ public class AnkiDb {
 				stmt.setLong(3, 3);
 				stmt.setLong(4, 2);
 				stmt.executeUpdate();
+				stmt.close();
 			}
 			
 			PreparedStatement stmt;
@@ -387,6 +403,7 @@ public class AnkiDb {
 			stmt.setInt(4, 0);
 			stmt.setString(5, item.question);
 			stmt.executeUpdate();
+			stmt.close();
 
 			stmt = conn.prepareStatement("INSERT INTO fields "
 					+ " (id, factId, fieldModelId, ordinal, value) "
@@ -397,6 +414,7 @@ public class AnkiDb {
 			stmt.setInt(4, 1);
 			stmt.setString(5, item.answer);
 			stmt.executeUpdate();
+			stmt.close();
 
 			int cardTotal = 0;
 			int cardNew = 0;
@@ -421,6 +439,7 @@ public class AnkiDb {
 			stmt.setInt(2, cardTotal);
 			stmt.setInt(3, cardNew);
 			stmt.executeUpdate();
+			stmt.close();
 			
 			return Long.valueOf(item.id);
 		} catch (SQLException e) {
@@ -465,8 +484,9 @@ public class AnkiDb {
 	 * @throws AnkiException
 	 */
 	private long getNextId(String table) throws AnkiException {
+		Statement stmt = null;
 		try {
-			Statement stmt = conn.createStatement();
+			stmt = conn.createStatement();
 			stmt.execute("SELECT max(id) FROM " + table);
 			ResultSet resSet = stmt.getResultSet();
 			Long id = resSet.getLong(1);
@@ -477,6 +497,14 @@ public class AnkiDb {
 		
 			e.printStackTrace();
 			throw new AnkiException();
+		} finally {
+			if (stmt!=null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
