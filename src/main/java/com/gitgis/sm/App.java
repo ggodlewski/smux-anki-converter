@@ -56,11 +56,6 @@ public class App {
 							
 							SmDb smDb = SmDb.getInstance(new File(mainDir , "Repetitions.dat"));
 							
-							Course course = parser.getCourse();
-							course.printDetailed();
-							if (smDb!=null) {
-								smDb.getItems(course);
-							}
 							
 							for (String entryName: parser.getFileEntryNames()) {
 								logger.info("entryName: "+entryName);
@@ -91,6 +86,12 @@ public class App {
 									}
 								}
 								
+							}
+
+							Course course = parser.getCourse();
+							course.printDetailed();
+							if (smDb!=null) {
+								smDb.getItems(course);
 							}
 							
 							// process every entry in the course...
