@@ -104,8 +104,18 @@ public class SmPakParser implements Parser {
 		namePos = readInt();
 
 		// fileInputStream.seek(namePos-20-4);
-		randomAccessFile.seek(namePos - 8);
-		String nameHeaderTag = new String(readBuf(8), "ISO-8859-1");
+		String nameHeaderTag = "";
+		if (namePos >= 8) {
+			randomAccessFile.seek(namePos - 8);
+			nameHeaderTag = new String(readBuf(8), "ISO-8859-1");
+		} else {
+			System.out.println("Unable to find NameChnk. Seeking by token.");
+			namePos = scanfor("NameChnk") + 8;
+			randomAccessFile.seek(namePos - 8);
+			nameHeaderTag = new String(readBuf(8), "ISO-8859-1");
+		}
+
+		System.out.println(namePos);
 
 		if (!nameHeaderTag.equals("NameChnk")) {
 			throw new SmPakException("Invalid NameChnk");
@@ -125,6 +135,68 @@ public class SmPakParser implements Parser {
 		namePos = namePos + skipped;
 	}
 
+	/**
+	 * Yet a another hack
+	 *
+	 * @param expected
+	 * @return
+	 * @throws IOException
+	 */
+	private int scanfor(String expected) throws IOException {
+		byte[] expectedBuf = expected.getBytes();
+		
+		int size = expectedBuf.length;
+		long length = randomAccessFile.length();
+
+		byte[] currentBuf = new byte[size];
+
+		Long pos = 0L;
+		
+		while (pos < length - size) {
+			System.out.println(pos);
+			randomAccessFile.seek(pos);
+			randomAccessFile.read(currentBuf, 0, currentBuf.length);
+	
+			boolean correct = true;
+			for (int i = 0; i < size; i++) {
+				if (currentBuf[i] != expectedBuf[i]) {
+					correct = false;
+					break;
+				}
+			}
+			
+			if (correct) {
+				return pos.intValue();
+			}
+			
+			if (!correct) {
+				int offset = 0;
+				int offsetStart = 0;
+				for (int i = 1; i < size; i++) {
+					if (currentBuf[i] == expectedBuf[offset]) {
+						if (offsetStart == 0) {
+							offsetStart = i;
+						}
+						offset++;
+					} else {
+						if (offsetStart > 0) {
+							offsetStart = 0;
+							break;
+						}
+					}
+				}
+				if (offsetStart > 0) {
+					pos += offsetStart;
+					continue;
+				}
+			}
+			
+			pos += size;
+		}
+		
+		return -1;
+	}
+
 	private void scanEntrChnk() throws IOException, SmPakException {
 		// long curPos = entrPos-8;
 
@@ -133,11 +205,16 @@ public class SmPakParser implements Parser {
 		String headerTag = new String(readBuf(8), "ISO-8859-1");
 
 		if (!headerTag.equals("EntrChnk")) {
-//			Logger.getLogger(SmPakParser.class.getName()).info(
-//					"TEST2 " + headerTag);
-			throw new SmPakException("Invalid EntrChnk");
+			entrPos = scanfor("EntrChnk") + 8;
+			randomAccessFile.seek(entrPos - 8);
+			headerTag = new String(readBuf(8), "ISO-8859-1");
+			if (!headerTag.equals("EntrChnk")) {
+//				Logger.getLogger(SmPakParser.class.getName()).info(
+//				"TEST2 " + headerTag);
+				throw new SmPakException("Invalid EntrChnk - "+headerTag);
+			}
 		}
-
+		
 		int filesCnt = readInt();
 
 //		System.out.println(filesCnt);

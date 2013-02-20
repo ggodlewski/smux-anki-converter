@@ -3,6 +3,9 @@
  */
 package com.gitgis.sm;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeClass;
+import org.testng.AssertJUnit;
 import java.io.File;
 
 import org.testng.Assert;
@@ -38,7 +41,7 @@ public class TestSmDb {
 	@Test
 	public void testItems() {
 		try {
-			Assert.assertTrue(true);
+			AssertJUnit.assertTrue(true);
 
 			Course course = parser.getCourse();
 

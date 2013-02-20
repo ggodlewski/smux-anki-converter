@@ -1,9 +1,5 @@
-/**
- * 
- */
 package com.gitgis.sm;
 
-import org.testng.annotations.Test;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,17 +8,15 @@ import java.io.InputStream;
 
 import org.testng.annotations.Test;
 
+import com.gitgis.sm.course.Course;
 import com.gitgis.sm.smpak.SmParser;
 
-/**
- * @author gg
- * 
- */
-public class TestUnpakAll {
+public class TestUnpakAllBugReport {
+
 	@Test(enabled = false)
-	public void testUnpak() {
+	public void testUnpakBug() {
 		try {
-			SmParser parser = new SmParser( new File("/var/www/testankirus/Rosyjski NP1 demo" ), "course");
+			SmParser parser = new SmParser( new File("/home/gg/k" ), "course");
 	
 //			SmParser parser = new SmParser(
 //			"/var/www/testanki/Niemiecki Kein Problem 1/course");
@@ -30,10 +24,10 @@ public class TestUnpakAll {
 
 			int cnt = 0;
 			
-//			Course course = parser.getCourse();
-//			System.out.println(course);
+			Course course = parser.getCourse();
+			System.out.println(course);
 			
-			String outputDir = "/var/www/testankirus/unpakaa";
+			String outputDir = "/tmp/aaa";
 			
 			for (String fileName: parser.getFileEntryNames()) {
 				System.out.println(fileName);

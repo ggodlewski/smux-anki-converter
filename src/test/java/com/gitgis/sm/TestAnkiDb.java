@@ -3,6 +3,9 @@
  */
 package com.gitgis.sm;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeClass;
+import org.testng.AssertJUnit;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map.Entry;
@@ -51,7 +54,7 @@ public class TestAnkiDb {
 	@Test
 	public void testCreate() {
 		try {
-			Assert.assertTrue(true);
+			AssertJUnit.assertTrue(true);
 			
 //			ankiDb.putMedia("/home/gg/1.png", new FileInputStream("/home/gg/1.png"));
 		} catch (Exception e) {

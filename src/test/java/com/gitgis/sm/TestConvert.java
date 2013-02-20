@@ -3,6 +3,9 @@
  */
 package com.gitgis.sm;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeClass;
+import org.testng.AssertJUnit;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -46,7 +49,7 @@ public class TestConvert {
 			System.out.println(exercise.question);
 			System.out.println(exercise.answer);
 			
-			Assert.assertTrue(exercise.answer.contains("[sound:00006a.mp3]"));
+			AssertJUnit.assertTrue(exercise.answer.contains("[sound:00006a.mp3]"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -63,7 +66,7 @@ public class TestConvert {
 			System.out.println(exercise.question);
 			System.out.println(exercise.answer);
 			
-			Assert.assertTrue(exercise.question.contains("[sound:00002c.mp3]"));
+			AssertJUnit.assertTrue(exercise.question.contains("[sound:00002c.mp3]"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -83,8 +86,8 @@ public class TestConvert {
 			System.out.println(exercise.question);
 			System.out.println(exercise.answer);
 			
-			Assert.assertTrue(exercise.question.contains("Lektion 1"));
-			Assert.assertTrue(exercise.answer.contains("This card is a lesson converted from SuperMemo UX course"));
+			AssertJUnit.assertTrue(exercise.question.contains("Lektion 1"));
+			AssertJUnit.assertTrue(exercise.answer.contains("This card is a lesson converted from SuperMemo UX course"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();

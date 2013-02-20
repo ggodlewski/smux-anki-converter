@@ -3,6 +3,9 @@
  */
 package com.gitgis.sm;
 
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeClass;
+import org.testng.AssertJUnit;
 import java.io.File;
 
 import org.slf4j.bridge.SLF4JBridgeHandler;
@@ -43,8 +46,8 @@ public class TestConvert2 {
 			System.out.println(exercise.question);
 			System.out.println(exercise.answer);
 			
-			Assert.assertTrue(exercise.question.contains("die Frau<span style=\"color: red\">(e, s, en)</span>"));
-			Assert.assertTrue(exercise.answer.contains("die Frau<span style=\"color: green\">en</span>"));
+			AssertJUnit.assertTrue(exercise.question.contains("die Frau<span style=\"color: red\">(e, s, en)</span>"));
+			AssertJUnit.assertTrue(exercise.answer.contains("die Frau<span style=\"color: green\">en</span>"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -59,8 +62,8 @@ public class TestConvert2 {
 			ItemConverter converter = new ItemConverter(course, exercise, parser.getInputStream(exercise.getEntryName()));
 			exercise = converter.getExercise();
 			
-			Assert.assertTrue(exercise.question.contains("<span style=\"color: red\">(Studieren, Studierst, Studiert, Studiere)</span> du Geschichte?"));
-			Assert.assertTrue(exercise.answer.contains("<span style=\"color: green\">Studierst</span> du Geschichte?"));
+			AssertJUnit.assertTrue(exercise.question.contains("<span style=\"color: red\">(Studieren, Studierst, Studiert, Studiere)</span> du Geschichte?"));
+			AssertJUnit.assertTrue(exercise.answer.contains("<span style=\"color: green\">Studierst</span> du Geschichte?"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -79,7 +82,7 @@ public class TestConvert2 {
 			System.out.println(exercise.answer);
 			
 //			Assert.assertTrue(exercise.question.contains("<span style=\"color: red\">&lt;geht, ? , es, Wie&gt;</span>"));
-			Assert.assertTrue(exercise.answer.contains("<span style=\"color: green\">&lt;Wie geht es ? &gt;</span>"));
+			AssertJUnit.assertTrue(exercise.answer.contains("<span style=\"color: green\">&lt;Wie geht es ? &gt;</span>"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -96,8 +99,8 @@ public class TestConvert2 {
 			System.out.println(exercise.question);
 			System.out.println(exercise.answer);
 
-			Assert.assertTrue(exercise.question.contains("<span style=\"color: red\">[ Herr Stadler, arbeitete, früher, in Düsseldorf. , Jedoch, musste, er, seinen, Arbeitsplatz, wechseln. , ]</span>"));
-			Assert.assertTrue(exercise.answer.contains("<span style=\"color: green\">[ arbeitete, musste, ]</span>"));
+			AssertJUnit.assertTrue(exercise.question.contains("<span style=\"color: red\">[ Herr Stadler, arbeitete, früher, in Düsseldorf. , Jedoch, musste, er, seinen, Arbeitsplatz, wechseln. , ]</span>"));
+			AssertJUnit.assertTrue(exercise.answer.contains("<span style=\"color: green\">[ arbeitete, musste, ]</span>"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -116,8 +119,8 @@ public class TestConvert2 {
 			System.out.println(exercise.question);
 			System.out.println(exercise.answer);
 			
-			Assert.assertTrue(exercise.question.contains("<span style=\"color: red\">[ Vater, Mutter, Techniker, Sohn, ]</span>"));
-			Assert.assertTrue(exercise.answer.contains("<span style=\"color: green\">[ Vater, Mutter, <strike>Techniker, </strike>Sohn, ]</span>"));
+			AssertJUnit.assertTrue(exercise.question.contains("<span style=\"color: red\">[ Vater, Mutter, Techniker, Sohn, ]</span>"));
+			AssertJUnit.assertTrue(exercise.answer.contains("<span style=\"color: green\">[ Vater, Mutter, <strike>Techniker, </strike>Sohn, ]</span>"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -135,7 +138,7 @@ public class TestConvert2 {
 			System.out.println(exercise.question);
 			System.out.println(exercise.answer);
 
-			Assert.assertTrue(exercise.question.contains("<span style=\"color: green\"><em>Guten Tag, Frau Fischer!</em> - <strong>Dzień dobry, pani Fischer!</strong></span>"));
+			AssertJUnit.assertTrue(exercise.question.contains("<span style=\"color: green\"><em>Guten Tag, Frau Fischer!</em> - <strong>Dzień dobry, pani Fischer!</strong></span>"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -158,7 +161,7 @@ public class TestConvert2 {
 //			<h1>Wskaż odpowiedni zaimek osobowy. </h1><br/>Grüß <span style="color: red">(Sie, dich, Ihnen, dir)</span>, Paul!
 //			<br/>Grüß dich, Paul!<span style="color: green">Grüß dich, Paul!</span>Grüß dich, Paul![sound:00124a.mp3]
 
-			Assert.assertTrue(exercise.answer.contains("<span style=\"color: green\">Grüß dich, Paul!</span>"));
+			AssertJUnit.assertTrue(exercise.answer.contains("<span style=\"color: green\">Grüß dich, Paul!</span>"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -179,7 +182,7 @@ public class TestConvert2 {
 //			[0] - Was machen Sie hier? [1] - Guten Tag! [2] - Auf Wiedersehen! [3] - Entschuldigen Sie! [4] - Wie ist Ihr Name? <span style="color: green">[0] - Was machen Sie hier? [1] - Guten Tag! [2] - Auf Wiedersehen! [3] - Entschuldigen Sie! [4] - Wie ist Ihr Name? </span>[0] - Was machen Sie hier? [1] - Guten Tag! [2] - Auf Wiedersehen! [3] - Entschuldigen Sie! [4] - Wie ist Ihr Name? [sound:00141a.mp3]
 
 			
-			Assert.assertTrue(exercise.answer.contains("Was machst du (denn) hier? - Was machen Sie hier?"));
+			AssertJUnit.assertTrue(exercise.answer.contains("Was machst du (denn) hier? - Was machen Sie hier?"));
 				
 		} catch (Exception e) {
 			e.printStackTrace();

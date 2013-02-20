@@ -5,7 +5,7 @@ package com.gitgis.sm;
 
 import java.io.File;
 
-import org.testng.Assert;
+import org.testng.AssertJUnit;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -37,7 +37,7 @@ public class TestSmWithConverter {
 	@Test
 	public void testItems() {
 		try {
-			Assert.assertTrue(true);
+			AssertJUnit.assertTrue(true);
 
 			Course course = parser.getCourse();
 
