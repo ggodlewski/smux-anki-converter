@@ -32,3 +32,10 @@ The contents of <dir> should look like:
 java -jar smux-anki-convert-<version>.jar . unpackdir
 
 SM files will be placed in unpackdir
+
+
+
+
+Compile with:
+
+mvn assembly:assembly
