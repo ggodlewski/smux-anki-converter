@@ -7,9 +7,9 @@
 	<version>1.6-SNAPSHOT</version>
 
 	<scm>
-		<connection>scm:git:git@github.com:ggodlewski/smux-anki-converter.git</connection>
-		<url>scm:git:git@github.com:ggodlewski/smux-anki-converter.git</url>
-		<developerConnection>scm:git:git@github.com:ggodlewski/smux-anki-converter.git</developerConnection>
+		<connection>scm:git:git://github.com/ggodlewski/smux-anki-converter.git</connection>
+		<url>http://github.com/ggodlewski/smux-anki-converter.git</url>
+		<developerConnection>scm:git:git://github.com/ggodlewski/smux-anki-converter.git</developerConnection>
 	</scm>
 
 <distributionManagement>  
