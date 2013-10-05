@@ -4,7 +4,7 @@
 	<groupId>com.gitgis.sm</groupId>
 	<artifactId>smux-anki-convert</artifactId>
 	<packaging>jar</packaging>
-	<version>1.6-SNAPSHOT</version>
+	<version>1.6</version>
 
 	<scm>
 		<connection>scm:git:git@github.com:ggodlewski/smux-anki-converter.git</connection>
